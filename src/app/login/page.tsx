@@ -1,7 +1,8 @@
 'use client';
 
 import { LoginForm } from '@/components/login-form';
-import { GalleryVerticalEndIcon } from 'lucide-react';
+import { Wallet } from 'lucide-react';
+import Image from 'next/image';
 
 export default function LoginPage() {
     return (
@@ -10,9 +11,9 @@ export default function LoginPage() {
                 <div className='flex justify-center gap-2 md:justify-start'>
                     <a href='#' className='flex items-center gap-2 font-medium'>
                         <div className='flex size-6 items-center justify-center rounded-md bg-primary text-primary-foreground'>
-                            <GalleryVerticalEndIcon className='size-4' />
+                            <Wallet className='size-4' />
                         </div>
-                        Acme Inc.
+                        Portfolio Tracker
                     </a>
                 </div>
                 <div className='flex flex-1 items-center justify-center'>
@@ -22,10 +23,11 @@ export default function LoginPage() {
                 </div>
             </div>
             <div className='relative hidden bg-muted lg:block'>
-                <img
+                <Image
                     src='/placeholder.svg'
                     alt='Image'
                     className='absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale'
+                    fill
                 />
             </div>
         </div>

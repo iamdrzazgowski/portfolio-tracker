@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -5,16 +7,40 @@ import {
     FieldDescription,
     FieldGroup,
     FieldLabel,
-    FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { useTransition } from 'react';
+import { signUpAction } from '@/actions/auth';
+import { useRouter } from 'next/navigation';
 
 export function SignupForm({
     className,
     ...props
 }: React.ComponentProps<'form'>) {
+    const {
+        register,
+        handleSubmit,
+        getValues,
+        formState: { errors },
+    } = useForm();
+    const [pending, startTransition] = useTransition();
+    const router = useRouter();
+
+    const onSubmit = async (data) => {
+        startTransition(() => {
+            signUpAction(data)
+                .then(() => router.push('/'))
+                .catch((err) => console.error(err.message));
+        });
+    };
+
     return (
-        <form className={cn('flex flex-col gap-6', className)} {...props}>
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={cn('flex flex-col gap-6', className)}
+            {...props}>
             <FieldGroup>
                 <div className='flex flex-col items-center gap-1 text-center'>
                     <h1 className='text-2xl font-bold'>Create your account</h1>
@@ -28,8 +54,12 @@ export function SignupForm({
                         id='name'
                         type='text'
                         placeholder='John Doe'
-                        required
-                        className='bg-background'
+                        className={`bg-background ${
+                            errors.name?.message ? 'border-red-500' : ''
+                        }`}
+                        {...register('name', {
+                            required: 'This field is required',
+                        })}
                     />
                 </Field>
                 <Field>
@@ -38,35 +68,60 @@ export function SignupForm({
                         id='email'
                         type='email'
                         placeholder='m@example.com'
-                        required
-                        className='bg-background'
+                        className={`bg-background ${
+                            errors.email?.message ? 'border-red-500' : ''
+                        }`}
+                        {...register('email', {
+                            required: 'This field is required',
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: 'Please provide a valid email address',
+                            },
+                        })}
                     />
-                    <FieldDescription>
-                        We&apos;ll use this to contact you. We will not share
-                        your email with anyone else.
-                    </FieldDescription>
                 </Field>
                 <Field>
                     <FieldLabel htmlFor='password'>Password</FieldLabel>
                     <Input
                         id='password'
                         type='password'
-                        required
-                        className='bg-background'
+                        className={`bg-background ${
+                            errors.password?.message ? 'border-red-500' : ''
+                        }`}
+                        {...register('password', {
+                            required: 'This field is required',
+                            minLength: {
+                                value: 8,
+                                message:
+                                    'Password needs a minimum of 8 characters',
+                            },
+                        })}
                     />
                     <FieldDescription>
                         Must be at least 8 characters long.
                     </FieldDescription>
                 </Field>
                 <Field>
-                    <FieldLabel htmlFor='confirm-password'>
+                    <FieldLabel htmlFor='confirmPassword'>
                         Confirm Password
                     </FieldLabel>
                     <Input
-                        id='confirm-password'
+                        id='confirmPassword'
                         type='password'
-                        required
-                        className='bg-background'
+                        className={`bg-background ${
+                            errors.confirmPassword?.message
+                                ? 'border-red-500'
+                                : ''
+                        }`}
+                        {...register('confirmPassword', {
+                            required: 'This field is required',
+                            validate: (value) => {
+                                return (
+                                    value === getValues().password ||
+                                    'Passwords need to match'
+                                );
+                            },
+                        })}
                     />
                     <FieldDescription>
                         Please confirm your password.
@@ -77,7 +132,8 @@ export function SignupForm({
                 </Field>
                 <Field>
                     <FieldDescription className='px-6 text-center'>
-                        Already have an account? <a href='#'>Sign in</a>
+                        Already have an account?{' '}
+                        <Link href='/login'>Sign in</Link>
                     </FieldDescription>
                 </Field>
             </FieldGroup>

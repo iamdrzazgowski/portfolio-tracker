@@ -1,3 +1,5 @@
+'use client';
+
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import {
@@ -5,16 +7,39 @@ import {
     FieldDescription,
     FieldGroup,
     FieldLabel,
-    FieldSeparator,
 } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useTransition } from 'react';
+import { useForm } from 'react-hook-form';
+import { loginAction } from '@/actions/auth';
 
 export function LoginForm({
     className,
     ...props
 }: React.ComponentProps<'form'>) {
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm();
+    const [pending, startTransition] = useTransition();
+    const router = useRouter();
+
+    const onSubmit = async (data) => {
+        startTransition(() => {
+            loginAction(data)
+                .then(() => router.push('/'))
+                .catch((err) => console.error(err.message));
+        });
+    };
+
     return (
-        <form className={cn('flex flex-col gap-6', className)} {...props}>
+        <form
+            onSubmit={handleSubmit(onSubmit)}
+            className={cn('flex flex-col gap-6', className)}
+            {...props}>
             <FieldGroup>
                 <div className='flex flex-col items-center gap-1 text-center'>
                     <h1 className='text-2xl font-bold'>
@@ -30,8 +55,16 @@ export function LoginForm({
                         id='email'
                         type='email'
                         placeholder='m@example.com'
-                        required
-                        className='bg-background'
+                        className={`bg-background ${
+                            errors.email?.message ? 'border-red-500' : ''
+                        }`}
+                        {...register('email', {
+                            required: 'This field is required',
+                            pattern: {
+                                value: /\S+@\S+\.\S+/,
+                                message: 'Please provide a valid email address',
+                            },
+                        })}
                     />
                 </Field>
                 <Field>
@@ -46,20 +79,30 @@ export function LoginForm({
                     <Input
                         id='password'
                         type='password'
-                        required
-                        className='bg-background'
+                        className={`bg-background ${
+                            errors.password?.message ? 'border-red-500' : ''
+                        }`}
+                        {...register('password', {
+                            required: 'This field is required',
+                            minLength: {
+                                value: 8,
+                                message:
+                                    'Password needs a minimum of 8 characters',
+                            },
+                        })}
                     />
                 </Field>
                 <Field>
                     <Button type='submit'>Login</Button>
                 </Field>
-                <FieldSeparator>Or continue with</FieldSeparator>
                 <Field>
                     <FieldDescription className='text-center'>
                         Don&apos;t have an account?{' '}
-                        <a href='#' className='underline underline-offset-4'>
+                        <Link
+                            href='/signup'
+                            className='underline underline-offset-4'>
                             Sign up
-                        </a>
+                        </Link>
                     </FieldDescription>
                 </Field>
             </FieldGroup>
