@@ -1,36 +1,130 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Portfolio Tracker – Plan Działania (Harmonogram)
 
-## Getting Started
+## Cel projektu
 
-First, run the development server:
+MVP aplikacji do śledzenia inwestycji w różne aktywa (akcje, ETF, krypto, karty
+kolekcjonerskie) z bieżącą wyceną portfela i podstawową analizą wyników.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Dzień 1 – Fundamenty projektu
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Zaplanowanie architektury:
+    - [ ] Użytkownicy, portfele, aktywa, transakcje, karty kolekcjonerskie
+- Określenie minimalnej bazy danych (tylko transakcje + asset info)
+    - [ ] Done
+- Przygotowanie listy endpointów / komponentów:
+    - [ ] Dashboard portfela
+    - [ ] CRUD portfela
+    - [ ] CRUD aktywów
+    - [ ] CRUD transakcji
+- Stworzenie ogólnego designu UI / layoutu (prosty wireframe)
+    - [ ] Done
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Dzień 2 – Autoryzacja i profile
 
-To learn more about Next.js, take a look at the following resources:
+- Implementacja logowania użytkowników (BetterAuth)
+    - [ ] Done
+- Ochrona tras / danych użytkownika
+    - [ ] Done
+- CRUD profilu użytkownika (opcjonalnie)
+    - [ ] Done
+- Testy autoryzacji
+    - [ ] Done
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Dzień 3 – Portfele i aktywa
 
-## Deploy on Vercel
+- CRUD portfela:
+    - [ ] Dodaj, edytuj, usuń
+    - [ ] Lista portfeli użytkownika
+- CRUD aktywów:
+    - [ ] Dodawanie aktywów do portfela
+    - [ ] Typy: `STOCK`, `ETF`, `CRYPTO`, `COLLECTIBLE`
+    - [ ] Pola: symbol, nazwa, waluta, ostatnia cena
+    - [ ] Testy dodawania / edycji / usuwania portfela i aktywów
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Dzień 4 – Transakcje
+
+- CRUD transakcji `BUY` / `SELL` dla aktywów
+    - [ ] Done
+- Obliczanie ilości posiadanej każdego aktywa (runtime)
+    - [ ] Done
+- Policz wartość inwestycji (`quantity * price`)
+    - [ ] Done
+
+---
+
+## Dzień 5 – Integracja z API cen
+
+- Pobieranie bieżących cen z API:
+    - [ ] Yahoo Finance / AlphaVantage → akcje, ETF
+    - [ ] CoinGecko → kryptowaluty
+- Aktualizacja pola `lastPrice` i `lastPriceAt` dla aktywów
+    - [ ] Done
+- Testy poprawności wyliczeń portfela
+    - [ ] Done
+
+---
+
+## Dzień 6 – Dashboard portfela
+
+- Widok szczegółowy portfela:
+    - [ ] Total invested
+    - [ ] Current value
+    - [ ] Profit / Loss
+    - [ ] ROI %
+    - [ ] Lista aktywów z bieżącą wartością i P/L
+    - [ ] W przypadku kolekcjonerskich kart → `estimatedValue`
+    - [ ] Prosty wykres wartości portfela (Chart.js / Recharts)
+
+---
+
+## Dzień 7 – Drobne usprawnienia i UX
+
+- [ ] Filtry aktywów po typie
+- [ ] Responsywność UI
+- [ ] Kolory profit/loss
+- [ ] Ikonki / logotypy aktywów
+- [ ] Poprawki UX / drobne bugi
+- [ ] Przygotowanie do prezentacji / screenów
+
+---
+
+## Dzień 8 – Snapshoty portfela (opcjonalnie)
+
+- Implementacja zapisu snapshotu portfela raz dziennie
+    - [ ] Done
+- Przechowywanie:
+    - [ ] `totalValue`
+    - [ ] `invested`
+    - [ ] `profit`
+- Podstawowe wykresy historyczne z snapshotów
+    - [ ] Done
+- Testy poprawności
+    - [ ] Done
+
+---
+
+## Dzień 9 – Testy końcowe i deployment
+
+- [ ] Sprawdzenie wszystkich funkcjonalności CRUD
+- [ ] Testy integracji z API cen
+- [ ] Finalne poprawki UI
+- [ ] Deployment aplikacji (Vercel + PostgreSQL)
+- [ ] Przygotowanie dokumentacji / README z opisem funkcjonalności
+
+---
+
+## Dzień 10 – Dodatki i backlog (opcjonalnie)
+
+- [ ] Integracja CSV import / export transakcji
+- [ ] Alerty cenowe
+- [ ] Historia cen (`AssetPrice`)
+- [ ] Multi-currency
+- [ ] Integracja API dla kolekcjonerskich kart
