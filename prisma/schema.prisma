@@ -12,6 +12,18 @@ datasource db {
   provider = "postgresql"
 }
 
+enum AssetType {
+  STOCK
+  ETF
+  CRYPTO
+  COLLECTIBLE
+}
+
+enum TransactionType {
+  BUY
+  SELL
+}
+
 model User {
   id            String    @id
   name          String
@@ -22,6 +34,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   sessions      Session[]
   accounts      Account[]
+  portfolios    Portfolio[]
 
   @@unique([email])
   @@map("user")
@@ -73,4 +86,81 @@ model Verification {
 
   @@index([identifier])
   @@map("verification")
+}
+
+model Portfolio {
+  id        String   @id @default(cuid())
+  name      String
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assets Asset[]
+  snapshots PortfolioSnapshot[]
+
+  @@index([userId])
+}
+
+model Asset {
+  id             String        @id @default(cuid())
+  name           String
+  symbol         String
+  type           AssetType
+  currency       String
+  lastPrice      Float?
+  lastPriceAt    DateTime?
+  estimatedValue Float?
+  portfolioId    String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  portfolio     Portfolio     @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+  prices        AssetPrice[]
+
+  @@index([symbol])
+  @@index([portfolioId])
+}
+
+model Transaction {
+  id        String          @id @default(cuid())
+  type      TransactionType
+  quantity  Float
+  price     Float
+  date      DateTime
+  assetId   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([assetId])
+}
+
+model PortfolioSnapshot {
+  id          String   @id @default(cuid())
+  portfolioId String
+  date        DateTime
+  totalValue  Float
+  invested    Float
+  profit      Float
+  createdAt   DateTime @default(now())
+
+  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@unique([portfolioId, date])
+  @@index([portfolioId])
+}
+
+model AssetPrice {
+  id       String   @id @default(cuid())
+  assetId  String
+  price    Float
+  date     DateTime
+  createdAt DateTime @default(now())
+
+  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
+
+  @@index([assetId, date])
 }
