@@ -12,8 +12,9 @@ import { Input } from '@/components/ui/input';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { useTransition } from 'react';
-import { signUpAction } from '@/actions/auth';
+import { SignUpData, signUpAction } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
+import Spinner from './ui/spinner';
 
 export function SignupForm({
     className,
@@ -24,11 +25,11 @@ export function SignupForm({
         handleSubmit,
         getValues,
         formState: { errors },
-    } = useForm();
+    } = useForm<SignUpData>();
     const [pending, startTransition] = useTransition();
     const router = useRouter();
 
-    const onSubmit = async (data) => {
+    const onSubmit = async (data: SignUpData) => {
         startTransition(() => {
             signUpAction(data)
                 .then(() => router.push('/'))
@@ -128,7 +129,9 @@ export function SignupForm({
                     </FieldDescription>
                 </Field>
                 <Field>
-                    <Button type='submit'>Create Account</Button>
+                    <Button type='submit' disabled={pending}>
+                        {pending ? <Spinner size={16} /> : 'Create Account'}
+                    </Button>
                 </Field>
                 <Field>
                     <FieldDescription className='px-6 text-center'>
