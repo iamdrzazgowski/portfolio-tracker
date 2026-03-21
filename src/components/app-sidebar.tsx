@@ -35,12 +35,12 @@ const data = {
     navMain: [
         {
             title: 'Dashboard',
-            url: '#',
+            url: '/dashboard',
             icon: <LayoutDashboard />,
         },
         {
             title: 'Portfolios',
-            url: '#',
+            url: '/dashboard/portfolios',
             icon: <FolderOpen />,
         },
         {

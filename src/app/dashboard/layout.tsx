@@ -17,7 +17,7 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { AppSidebar } from '@/components/app-sidebar';
 
-export default function Providers({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <TooltipProvider>
             <SidebarProvider defaultOpen={true}>
