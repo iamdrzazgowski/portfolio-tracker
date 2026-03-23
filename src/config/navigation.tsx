@@ -7,57 +7,57 @@ import {
     Coins,
     ChartColumn,
     Star,
-} from "lucide-react";
+} from 'lucide-react';
 
 export const navigationData = {
     user: {
-        name: "shadcn",
-        email: "m@example.com",
-        avatar: "/avatars/shadcn.jpg",
+        name: 'shadcn',
+        email: 'm@example.com',
+        avatar: '/avatars/shadcn.jpg',
     },
     navMain: [
         {
-            title: "Dashboard",
-            url: "/dashboard",
+            title: 'Dashboard',
+            url: '/dashboard',
             icon: <LayoutDashboard />,
         },
         {
-            title: "Portfolios",
-            url: "/dashboard/portfolios",
+            title: 'Portfolio',
+            url: '/dashboard/portfolio',
             icon: <FolderOpen />,
         },
         {
-            title: "Transactions",
-            url: "#",
+            title: 'Transactions',
+            url: '#',
             icon: <Receipt />,
         },
     ],
     navSecondary: [
         {
-            title: "Settings",
-            url: "#",
+            title: 'Settings',
+            url: '#',
             icon: <Settings />,
         },
     ],
     assets: [
         {
-            title: "Stocks",
-            url: "#",
+            title: 'Stocks',
+            url: '#',
             icon: <TrendingUp />,
         },
         {
-            title: "Crypto",
-            url: "#",
+            title: 'Crypto',
+            url: '#',
             icon: <Coins />,
         },
         {
-            title: "ETFs",
-            url: "#",
+            title: 'ETFs',
+            url: '#',
             icon: <ChartColumn />,
         },
         {
-            title: "Collectibles",
-            url: "#",
+            title: 'Collectibles',
+            url: '#',
             icon: <Star />,
         },
     ],
