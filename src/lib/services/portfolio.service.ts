@@ -25,6 +25,21 @@ export async function createPortfolio(data: {
     return portfolio;
 }
 
+export async function deletePortfolio(data: {
+    portfolioId: string;
+    userId: string;
+}) {
+    const { portfolioId, userId } = data;
+
+    if (!portfolioId) throw new Error('Portfolio ID is required');
+
+    if (!userId) throw new Error('User ID is required');
+
+    const result = await portfolioRepository.delete(data);
+
+    console.log(result);
+}
+
 export async function updatePortfolio(data: {
     id: string;
     name: string;

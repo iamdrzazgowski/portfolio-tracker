@@ -3,6 +3,7 @@
 import { auth } from '@/lib/auth';
 import {
     createPortfolio,
+    deletePortfolio,
     getUserPortfolios,
     updatePortfolio,
 } from '@/lib/services/portfolio.service';
@@ -57,7 +58,7 @@ export async function updatePortfolioAction(data: {
     };
 }
 
-export async function getPortfolios() {
+export async function getPortfoliosAction() {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
@@ -69,4 +70,23 @@ export async function getPortfolios() {
     const portfolios = await getUserPortfolios(session.user.id);
 
     return portfolios;
+}
+
+export async function deletePortfolioAction(portfolioId: string) {
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    if (!session?.user?.id) {
+        throw new Error('No active session!');
+    }
+
+    const portfolio = await deletePortfolio({
+        portfolioId,
+        userId: session.user.id,
+    });
+
+    console.log(portfolio);
+
+    return portfolio;
 }

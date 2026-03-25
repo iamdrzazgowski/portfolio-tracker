@@ -6,6 +6,14 @@ export const portfolioRepository = {
             data,
         });
     },
+    async delete(data: { portfolioId: string; userId: string }) {
+        return prisma.portfolio.deleteMany({
+            where: {
+                id: data.portfolioId,
+                userId: data.userId,
+            },
+        });
+    },
     async update(data: {
         id: string;
         name: string;
