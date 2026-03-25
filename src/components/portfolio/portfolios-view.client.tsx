@@ -3,6 +3,7 @@
 import { useState, useTransition } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DashboardPageHeader } from '@/components/layout/dashboard-page-header';
 import { Portfolio } from '@/types/portfolio';
 import { PortfolioSummaryCards } from '@/components/portfolio/portfolio-summary-cards';
 import { PortfolioCard } from '@/components/portfolio/portfolio-card';
@@ -18,7 +19,7 @@ export function PortfoliosViewClient({
     const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(
         null,
     );
-    const [isPending, startTransition] = useTransition();
+    const [, startTransition] = useTransition();
 
     const handleEdit = (portfolio: Portfolio) => {
         setEditingPortfolio(portfolio);
@@ -38,20 +39,14 @@ export function PortfoliosViewClient({
 
     return (
         <div className='space-y-6 m-5'>
-            <div className='flex items-center justify-between'>
-                <div>
-                    <h1 className='text-2xl font-semibold tracking-tight'>
-                        Portfolios
-                    </h1>
-                    <p className='text-sm text-muted-foreground'>
-                        Manage your investment portfolios
-                    </p>
-                </div>
+            <DashboardPageHeader
+                title='Portfolios'
+                description='Manage your investment portfolios'>
                 <Button onClick={handleAddNew}>
                     <Plus className='mr-2 size-4' />
                     Add Portfolio
                 </Button>
-            </div>
+            </DashboardPageHeader>
 
             <PortfolioSummaryCards portfolios={portfolios} />
 
