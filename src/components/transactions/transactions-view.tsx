@@ -120,25 +120,31 @@ export function TransactionsView({
             <DashboardPageHeader
                 title='Transactions'
                 description='Track all your buy and sell activities'>
-                <Button variant='outline' onClick={handleExport}>
-                    <Download className='mr-2 size-4' />
-                    Export
-                </Button>
-                <AddTransactionDialog
-                    portfolios={portfolios}
-                    assets={assets}
-                    onAdd={handleAdd}
-                    onFetchCurrentPrice={(assetQuery) => {
-                        const normalized = assetQuery.trim().toLowerCase();
-                        const found = assets.find(
-                            (a) =>
-                                a.symbol.toLowerCase() === normalized ||
-                                a.name.toLowerCase() === normalized ||
-                                a.id.toLowerCase() === normalized,
-                        );
-                        return found?.lastPrice ?? null;
-                    }}
-                />
+                <div className='flex w-full flex-col gap-2 sm:w-auto sm:flex-row sm:items-center'>
+                    <Button
+                        variant='outline'
+                        onClick={handleExport}
+                        className='w-full sm:w-auto'>
+                        <Download className='mr-2 size-4' />
+                        Export
+                    </Button>
+                    <AddTransactionDialog
+                        portfolios={portfolios}
+                        assets={assets}
+                        triggerClassName='w-full sm:w-auto'
+                        onAdd={handleAdd}
+                        onFetchCurrentPrice={(assetQuery) => {
+                            const normalized = assetQuery.trim().toLowerCase();
+                            const found = assets.find(
+                                (a) =>
+                                    a.symbol.toLowerCase() === normalized ||
+                                    a.name.toLowerCase() === normalized ||
+                                    a.id.toLowerCase() === normalized,
+                            );
+                            return found?.lastPrice ?? null;
+                        }}
+                    />
+                </div>
             </DashboardPageHeader>
             <TransactionsTable
                 transactions={transactions}

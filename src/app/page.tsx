@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { TrendingUp } from "lucide-react";
 
 export default function MinimalCenteredLoader() {
     const router = useRouter();
@@ -24,12 +25,20 @@ export default function MinimalCenteredLoader() {
     }, [router]);
 
     return (
-        <div className="flex items-center justify-center h-screen bg-background">
-            <div className="w-64 h-1 bg-muted rounded-full overflow-hidden">
+        <div className="flex flex-col items-center justify-center h-screen bg-background gap-6">
+            <div className="flex items-center gap-2.5 text-foreground">
+                <div className="flex size-8 items-center justify-center rounded-lg bg-primary">
+                    <TrendingUp className="size-4 text-primary-foreground" />
+                </div>
+                <span className="font-serif text-xl font-light italic tracking-tight">
+                    Portfolio Tracker
+                </span>
+            </div>
+            <div className="w-48 h-px bg-border overflow-hidden">
                 <div
-                    className="h-1 bg-foreground transition-all duration-150 ease-out"
+                    className="h-full bg-primary transition-all duration-150 ease-out"
                     style={{ width: `${progress}%` }}
-                ></div>
+                />
             </div>
         </div>
     );

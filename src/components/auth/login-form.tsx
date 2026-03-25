@@ -2,12 +2,6 @@
 
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-    Field,
-    FieldDescription,
-    FieldGroup,
-    FieldLabel,
-} from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -40,27 +34,37 @@ export function LoginForm({
     return (
         <form
             onSubmit={handleSubmit(onSubmit)}
-            className={cn("flex flex-col gap-6", className)}
+            className={cn("flex flex-col gap-7", className)}
             {...props}
         >
-            <FieldGroup>
-                <div className="flex flex-col items-center gap-1 text-center">
-                    <h1 className="text-2xl font-bold">
-                        Login to your account
-                    </h1>
-                    <p className="text-sm text-balance text-muted-foreground">
-                        Enter your email below to login to your account
-                    </p>
-                </div>
-                <Field>
-                    <FieldLabel htmlFor="email">Email</FieldLabel>
+            {/* Header */}
+            <div className="space-y-1">
+                <h1 className="font-serif text-3xl font-light italic tracking-tight text-foreground">
+                    Welcome back.
+                </h1>
+                <p className="text-[11px] uppercase tracking-[0.1em] text-muted-foreground">
+                    Sign in to your portfolio
+                </p>
+            </div>
+
+            {/* Fields */}
+            <div className="flex flex-col gap-4">
+                <div className="flex flex-col gap-1.5">
+                    <label
+                        htmlFor="email"
+                        className="text-[10px] font-normal uppercase tracking-[0.1em] text-muted-foreground"
+                    >
+                        Email
+                    </label>
                     <Input
                         id="email"
                         type="email"
-                        placeholder="m@example.com"
-                        className={`bg-background ${
-                            errors.email?.message ? "border-red-500" : ""
-                        }`}
+                        placeholder="you@example.com"
+                        autoComplete="email"
+                        className={cn(
+                            "h-9 border-border/70 bg-card text-sm placeholder:text-muted-foreground/50 focus-visible:border-primary focus-visible:ring-0",
+                            errors.email && "border-destructive",
+                        )}
                         {...register("email", {
                             required: "This field is required",
                             pattern: {
@@ -69,23 +73,36 @@ export function LoginForm({
                             },
                         })}
                     />
-                </Field>
-                <Field>
-                    <div className="flex items-center">
-                        <FieldLabel htmlFor="password">Password</FieldLabel>
+                    {errors.email && (
+                        <p className="text-[11px] text-destructive">
+                            {errors.email.message}
+                        </p>
+                    )}
+                </div>
+
+                <div className="flex flex-col gap-1.5">
+                    <div className="flex items-center justify-between">
+                        <label
+                            htmlFor="password"
+                            className="text-[10px] font-normal uppercase tracking-[0.1em] text-muted-foreground"
+                        >
+                            Password
+                        </label>
                         <a
                             href="#"
-                            className="ml-auto text-sm underline-offset-4 hover:underline"
+                            className="text-[11px] text-muted-foreground underline-offset-4 hover:text-foreground hover:underline transition-colors"
                         >
-                            Forgot your password?
+                            Forgot password?
                         </a>
                     </div>
                     <Input
                         id="password"
                         type="password"
-                        className={`bg-background ${
-                            errors.password?.message ? "border-red-500" : ""
-                        }`}
+                        autoComplete="current-password"
+                        className={cn(
+                            "h-9 border-border/70 bg-card text-sm focus-visible:border-primary focus-visible:ring-0",
+                            errors.password && "border-destructive",
+                        )}
                         {...register("password", {
                             required: "This field is required",
                             minLength: {
@@ -95,24 +112,34 @@ export function LoginForm({
                             },
                         })}
                     />
-                </Field>
-                <Field>
-                    <Button type="submit" disabled={pending}>
-                        {pending ? <Spinner size={16} /> : "Login"}
-                    </Button>
-                </Field>
-                <Field>
-                    <FieldDescription className="text-center">
-                        Don&apos;t have an account?{" "}
-                        <Link
-                            href="/signup"
-                            className="underline underline-offset-4"
-                        >
-                            Sign up
-                        </Link>
-                    </FieldDescription>
-                </Field>
-            </FieldGroup>
+                    {errors.password && (
+                        <p className="text-[11px] text-destructive">
+                            {errors.password.message}
+                        </p>
+                    )}
+                </div>
+            </div>
+
+            {/* Submit */}
+            <div className="flex flex-col gap-3">
+                <Button
+                    type="submit"
+                    disabled={pending}
+                    className="h-9 w-full bg-primary text-xs uppercase tracking-[0.1em] text-primary-foreground hover:bg-primary/90"
+                >
+                    {pending ? <Spinner size={14} /> : "Sign in"}
+                </Button>
+
+                <p className="text-center text-[11px] text-muted-foreground">
+                    Don&apos;t have an account?{" "}
+                    <Link
+                        href="/signup"
+                        className="font-medium text-foreground underline-offset-4 hover:underline"
+                    >
+                        Create one
+                    </Link>
+                </p>
+            </div>
         </form>
     );
 }

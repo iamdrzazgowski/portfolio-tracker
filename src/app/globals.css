@@ -1,6 +1,4 @@
-@import 'tailwindcss';
-@import 'tw-animate-css';
-@import 'shadcn/tailwind.css';
+@import "tailwindcss";
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
@@ -10,7 +8,8 @@
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --font-sans: var(--font-sans);
-    --font-mono: var(--font-geist-mono);
+    --font-mono: var(--font-sans);
+    --font-serif: var(--font-serif);
     --color-sidebar-ring: var(--sidebar-ring);
     --color-sidebar-border: var(--sidebar-border);
     --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -28,6 +27,7 @@
     --color-input: var(--input);
     --color-border: var(--border);
     --color-destructive: var(--destructive);
+    --color-destructive-foreground: var(--destructive-foreground);
     --color-accent-foreground: var(--accent-foreground);
     --color-accent: var(--accent);
     --color-muted-foreground: var(--muted-foreground);
@@ -40,6 +40,8 @@
     --color-popover: var(--popover);
     --color-card-foreground: var(--card-foreground);
     --color-card: var(--card);
+    --color-success: var(--success);
+    --color-success-foreground: var(--success-foreground);
     --radius-sm: calc(var(--radius) * 0.6);
     --radius-md: calc(var(--radius) * 0.8);
     --radius-lg: var(--radius);
@@ -49,73 +51,136 @@
     --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/* ─── Light mode ───────────────────────────────────────────────────────────── */
 :root {
-    --card: oklch(1 0 0);
-    --card-foreground: oklch(0.145 0 0);
-    --popover: oklch(1 0 0);
-    --popover-foreground: oklch(0.145 0 0);
-    --primary: oklch(0.205 0 0);
-    --primary-foreground: oklch(0.985 0 0);
-    --secondary: oklch(0.97 0 0);
-    --secondary-foreground: oklch(0.205 0 0);
-    --muted: oklch(0.97 0 0);
-    --muted-foreground: oklch(0.556 0 0);
-    --accent: oklch(0.97 0 0);
-    --accent-foreground: oklch(0.205 0 0);
-    --destructive: oklch(0.577 0.245 27.325);
-    --border: oklch(0.922 0 0);
-    --input: oklch(0.922 0 0);
-    --ring: oklch(0.708 0 0);
-    --chart-1: oklch(0.809 0.105 251.813);
-    --chart-2: oklch(0.623 0.214 259.815);
-    --chart-3: oklch(0.546 0.245 262.881);
-    --chart-4: oklch(0.488 0.243 264.376);
-    --chart-5: oklch(0.424 0.199 265.638);
+    /* Warm off-white surface — #f7f5f0 */
+    --background: oklch(0.968 0.007 87.5);
+    --foreground: oklch(0.131 0.003 17.5);
+
+    /* Cards: near-white warm — #fffefb */
+    --card: oklch(0.998 0.003 87.5);
+    --card-foreground: oklch(0.131 0.003 17.5);
+
+    --popover: oklch(0.998 0.003 87.5);
+    --popover-foreground: oklch(0.131 0.003 17.5);
+
+    /* Primary: deep royal blue — #2c52a0 */
+    --primary: oklch(0.435 0.124 261.3);
+    --primary-foreground: oklch(1 0 0);
+
+    /* Secondary: soft blue-tinted surface */
+    --secondary: oklch(0.918 0.022 261.3);
+    --secondary-foreground: oklch(0.27 0.062 261.3);
+
+    /* Muted: warm light gray */
+    --muted: oklch(0.944 0.008 87.5);
+    --muted-foreground: oklch(0.54 0.003 87.5);
+
+    /* Accent: light blue tint — #e8edf8 */
+    --accent: oklch(0.944 0.022 261.3);
+    --accent-foreground: oklch(0.27 0.062 261.3);
+
+    /* Destructive: dark red — #9b1d1d */
+    --destructive: oklch(0.408 0.147 26.3);
+    --destructive-foreground: oklch(1 0 0);
+
+    /* Success: forest green — #1a6644 */
+    --success: oklch(0.453 0.099 162);
+    --success-foreground: oklch(1 0 0);
+
+    /* Borders & inputs: warm gray — #e2dfd8 */
+    --border: oklch(0.889 0.009 87.5);
+    --input: oklch(0.889 0.009 87.5);
+    --ring: oklch(0.435 0.124 261.3);
+
+    /* Charts */
+    --chart-1: oklch(0.435 0.124 261.3); /* deep blue    */
+    --chart-2: oklch(0.704 0.097 261.3); /* light blue   */
+    --chart-3: oklch(0.644 0.135 299); /* violet       */
+    --chart-4: oklch(0.453 0.099 162); /* forest green */
+    --chart-5: oklch(0.748 0.122 60); /* amber        */
+
     --radius: 0.625rem;
-    --sidebar: oklch(0.985 0 0);
-    --sidebar-foreground: oklch(0.145 0 0);
-    --sidebar-primary: oklch(0.205 0 0);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.97 0 0);
-    --sidebar-accent-foreground: oklch(0.205 0 0);
-    --sidebar-border: oklch(0.922 0 0);
-    --sidebar-ring: oklch(0.708 0 0);
-    --background: oklch(1 0 0);
-    --foreground: oklch(0.145 0 0);
+
+    /* Sidebar: same as card */
+    --sidebar: oklch(0.998 0.003 87.5);
+    --sidebar-foreground: oklch(0.131 0.003 17.5);
+    --sidebar-primary: oklch(0.435 0.124 261.3);
+    --sidebar-primary-foreground: oklch(1 0 0);
+    --sidebar-accent: oklch(0.944 0.008 87.5);
+    --sidebar-accent-foreground: oklch(0.27 0.042 87.5);
+    --sidebar-border: oklch(0.889 0.009 87.5);
+    --sidebar-ring: oklch(0.435 0.124 261.3);
+
+    /* Scrollbars */
+    --scrollbar-track: oklch(0.944 0.008 87.5);
+    --scrollbar-thumb: oklch(0.82 0.012 87.5);
+    --scrollbar-thumb-hover: oklch(0.72 0.02 261.3);
 }
 
+/* ─── Dark mode ────────────────────────────────────────────────────────────── */
 .dark {
-    --background: oklch(0.145 0 0);
-    --foreground: oklch(0.985 0 0);
-    --card: oklch(0.205 0 0);
-    --card-foreground: oklch(0.985 0 0);
-    --popover: oklch(0.205 0 0);
-    --popover-foreground: oklch(0.985 0 0);
-    --primary: oklch(0.922 0 0);
-    --primary-foreground: oklch(0.205 0 0);
-    --secondary: oklch(0.269 0 0);
-    --secondary-foreground: oklch(0.985 0 0);
-    --muted: oklch(0.269 0 0);
-    --muted-foreground: oklch(0.708 0 0);
-    --accent: oklch(0.269 0 0);
-    --accent-foreground: oklch(0.985 0 0);
-    --destructive: oklch(0.704 0.191 22.216);
-    --border: oklch(1 0 0 / 10%);
-    --input: oklch(1 0 0 / 15%);
-    --ring: oklch(0.556 0 0);
-    --chart-1: oklch(0.809 0.105 251.813);
-    --chart-2: oklch(0.623 0.214 259.815);
-    --chart-3: oklch(0.546 0.245 262.881);
-    --chart-4: oklch(0.488 0.243 264.376);
-    --chart-5: oklch(0.424 0.199 265.638);
-    --sidebar: oklch(0.205 0 0);
-    --sidebar-foreground: oklch(0.985 0 0);
-    --sidebar-primary: oklch(0.488 0.243 264.376);
-    --sidebar-primary-foreground: oklch(0.985 0 0);
-    --sidebar-accent: oklch(0.269 0 0);
-    --sidebar-accent-foreground: oklch(0.985 0 0);
-    --sidebar-border: oklch(1 0 0 / 10%);
-    --sidebar-ring: oklch(0.556 0 0);
+    /* Warm dark background — #141410 */
+    --background: oklch(0.118 0.006 87.5);
+    --foreground: oklch(0.944 0.008 87.5);
+
+    /* Dark card — #1e1d18 */
+    --card: oklch(0.164 0.008 87.5);
+    --card-foreground: oklch(0.944 0.008 87.5);
+
+    --popover: oklch(0.164 0.008 87.5);
+    --popover-foreground: oklch(0.944 0.008 87.5);
+
+    /* Primary in dark: lighter blue — #7ea8e8 */
+    --primary: oklch(0.704 0.097 261.3);
+    --primary-foreground: oklch(0.131 0.028 261.3);
+
+    /* Secondary: dark surface */
+    --secondary: oklch(0.225 0.008 87.5);
+    --secondary-foreground: oklch(0.9 0.008 87.5);
+
+    /* Muted: dark warm gray — #2e2c26 */
+    --muted: oklch(0.225 0.008 87.5);
+    --muted-foreground: oklch(0.545 0.006 87.5);
+
+    /* Accent: dark navy — #1a2540 */
+    --accent: oklch(0.198 0.057 261.3);
+    --accent-foreground: oklch(0.9 0.008 87.5);
+
+    /* Destructive in dark: soft red — #e06060 */
+    --destructive: oklch(0.648 0.148 26.3);
+    --destructive-foreground: oklch(0.131 0 0);
+
+    /* Success in dark: medium green — #4cad7e */
+    --success: oklch(0.694 0.118 162);
+    --success-foreground: oklch(0.131 0.028 162);
+
+    /* Borders — subtle warm */
+    --border: oklch(1 0 0 / 8%);
+    --input: oklch(1 0 0 / 10%);
+    --ring: oklch(0.704 0.097 261.3);
+
+    /* Charts */
+    --chart-1: oklch(0.704 0.097 261.3); /* light blue */
+    --chart-2: oklch(0.435 0.124 261.3); /* deep blue  */
+    --chart-3: oklch(0.703 0.134 299); /* violet     */
+    --chart-4: oklch(0.694 0.118 162); /* green      */
+    --chart-5: oklch(0.773 0.126 60); /* amber      */
+
+    /* Sidebar: slightly darker than card */
+    --sidebar: oklch(0.14 0.007 87.5);
+    --sidebar-foreground: oklch(0.944 0.008 87.5);
+    --sidebar-primary: oklch(0.704 0.097 261.3);
+    --sidebar-primary-foreground: oklch(0.944 0.008 87.5);
+    --sidebar-accent: oklch(0.198 0.057 261.3);
+    --sidebar-accent-foreground: oklch(0.9 0.008 87.5);
+    --sidebar-border: oklch(1 0 0 / 8%);
+    --sidebar-ring: oklch(0.704 0.097 261.3);
+
+    /* Scrollbars */
+    --scrollbar-track: oklch(0.175 0.008 87.5);
+    --scrollbar-thumb: oklch(0.31 0.01 87.5);
+    --scrollbar-thumb-hover: oklch(0.41 0.012 87.5);
 }
 
 @layer base {
@@ -125,7 +190,63 @@
     body {
         @apply bg-background text-foreground;
     }
-  html {
-    @apply font-sans;
+    html {
+        @apply font-sans;
+    }
+
+    /* Global scrollbar styling */
+    * {
+        scrollbar-width: thin;
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+
+    *::-webkit-scrollbar {
+        width: 10px;
+        height: 10px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+        border-radius: 9999px;
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border: 2px solid var(--scrollbar-track);
+        border-radius: 9999px;
+    }
+
+    *::-webkit-scrollbar-thumb:hover {
+        background: var(--scrollbar-thumb-hover);
+    }
+
+    *::-webkit-scrollbar-corner {
+        background: var(--scrollbar-track);
+    }
+
+    /* Force dark scrollbar colors where browser/component styles win specificity */
+    html.dark,
+    html.dark body,
+    html.dark * {
+        scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track) !important;
+    }
+
+    html.dark::-webkit-scrollbar-track,
+    html.dark body::-webkit-scrollbar-track,
+    html.dark *::-webkit-scrollbar-track {
+        background-color: var(--scrollbar-track) !important;
+    }
+
+    html.dark::-webkit-scrollbar-thumb,
+    html.dark body::-webkit-scrollbar-thumb,
+    html.dark *::-webkit-scrollbar-thumb {
+        background-color: var(--scrollbar-thumb) !important;
+        border-color: var(--scrollbar-track) !important;
+    }
+
+    html.dark::-webkit-scrollbar-thumb:hover,
+    html.dark body::-webkit-scrollbar-thumb:hover,
+    html.dark *::-webkit-scrollbar-thumb:hover {
+        background-color: var(--scrollbar-thumb-hover) !important;
     }
 }

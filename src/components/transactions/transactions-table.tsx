@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Table, TableBody } from '@/components/ui/table';
-import { Transaction, TransactionType } from '@/types/transactions';
-import { EmptyTransactionsState } from './empty-transactions-state';
-import { TransactionRow } from './transaction-row';
-import { TransactionsTableHeader } from './transactions-table-header';
-import { TransactionsToolbar } from './transactions-toolbar';
+import { useState } from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Table, TableBody } from "@/components/ui/table";
+import { Transaction, TransactionType } from "@/types/transactions";
+import { EmptyTransactionsState } from "./empty-transactions-state";
+import { TransactionRow } from "./transaction-row";
+import { TransactionsTableHeader } from "./transactions-table-header";
+import { TransactionsToolbar } from "./transactions-toolbar";
 
 interface TransactionsTableProps {
     transactions: Transaction[];
@@ -15,18 +15,18 @@ interface TransactionsTableProps {
     onDelete?: (id: string) => void;
 }
 
-type FilterValue = 'all' | TransactionType;
+type FilterValue = "all" | TransactionType;
 
 export function TransactionsTable({
     transactions,
     onEdit,
     onDelete,
 }: TransactionsTableProps) {
-    const [filter, setFilter] = useState<FilterValue>('all');
-    const [search, setSearch] = useState('');
+    const [filter, setFilter] = useState<FilterValue>("all");
+    const [search, setSearch] = useState("");
 
     const filtered = transactions
-        .filter((t) => filter === 'all' || t.type === filter)
+        .filter((t) => filter === "all" || t.type === filter)
         .filter((t) => {
             if (!search) return true;
             const q = search.toLowerCase();
@@ -38,8 +38,8 @@ export function TransactionsTable({
         });
 
     return (
-        <Card className='border border-border/60 bg-card shadow-sm'>
-            <CardHeader className='pb-4'>
+        <Card className="border border-border/50 bg-card shadow-none">
+            <CardHeader className="px-4 pb-4 pt-5 sm:px-5">
                 <TransactionsToolbar
                     search={search}
                     filter={filter}
@@ -47,9 +47,9 @@ export function TransactionsTable({
                     onFilterChange={setFilter}
                 />
             </CardHeader>
-            <CardContent className='pt-0'>
-                <div className='overflow-hidden rounded-xl border border-border/60 bg-background'>
-                    <Table className='[&_td]:py-3 [&_th]:py-3'>
+            <CardContent className="p-0">
+                <div className="overflow-x-auto">
+                    <Table className="min-w-[680px] [&_td]:py-2.5 [&_th]:py-2.5 sm:min-w-0">
                         <TransactionsTableHeader />
                         <TableBody>
                             {filtered.map((transaction) => (
@@ -60,7 +60,9 @@ export function TransactionsTable({
                                     onDelete={onDelete}
                                 />
                             ))}
-                            {filtered.length === 0 && <EmptyTransactionsState />}
+                            {filtered.length === 0 && (
+                                <EmptyTransactionsState />
+                            )}
                         </TableBody>
                     </Table>
                 </div>

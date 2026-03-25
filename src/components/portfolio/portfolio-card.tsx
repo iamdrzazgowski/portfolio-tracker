@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import {
     FolderOpen,
@@ -6,20 +6,19 @@ import {
     Pencil,
     Trash2,
     ChevronRight,
-} from 'lucide-react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
+} from "lucide-react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { formatNumber } from '@/lib/format';
-import { Portfolio } from '@/types/portfolio';
-import Link from 'next/link';
+} from "@/components/ui/dropdown-menu";
+import { formatNumber } from "@/lib/format";
+import { Portfolio } from "@/types/portfolio";
+import Link from "next/link";
 
 interface PortfolioCardProps {
     portfolio: Portfolio;
@@ -32,79 +31,98 @@ export function PortfolioCard({
     onEdit,
     onDelete,
 }: PortfolioCardProps) {
+    const isPositive = portfolio.change >= 0;
+
     return (
-        <Card className='group border border-border/50 bg-card transition-all hover:border-primary/30'>
-            <CardHeader className='pb-3'>
-                <div className='flex items-start justify-between'>
-                    <div className='flex items-center gap-3'>
-                        <div className='flex size-10 items-center justify-center rounded-lg bg-primary/10'>
-                            <FolderOpen className='size-5 text-primary' />
+        <Card className="group border border-border/50 bg-card shadow-none transition-colors hover:border-primary/30">
+            <CardHeader className="pb-3">
+                <div className="flex items-start justify-between">
+                    <div className="flex items-center gap-3">
+                        <div className="flex size-9 items-center justify-center rounded-lg bg-accent">
+                            <FolderOpen className="size-4 text-primary" />
                         </div>
                         <div>
-                            <CardTitle className='text-base'>
+                            <p className="text-sm font-medium leading-tight text-foreground">
                                 {portfolio.name}
-                            </CardTitle>
-                            <p className='text-xs text-muted-foreground'>
-                                {portfolio.assets} assets
+                            </p>
+                            <p className="mt-0.5 text-[10px] uppercase tracking-[0.08em] text-muted-foreground">
+                                {portfolio.assets}{" "}
+                                {portfolio.assets === 1 ? "asset" : "assets"}
                             </p>
                         </div>
                     </div>
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
-                                variant='ghost'
-                                size='icon'
-                                className='size-8 opacity-0 group-hover:opacity-100'>
-                                <MoreHorizontal className='size-4' />
+                                variant="ghost"
+                                size="icon"
+                                className="size-7 opacity-0 transition-opacity group-hover:opacity-100"
+                            >
+                                <MoreHorizontal className="size-3.5" />
                             </Button>
                         </DropdownMenuTrigger>
-                        <DropdownMenuContent align='end'>
-                            <DropdownMenuItem onClick={() => onEdit(portfolio)}>
-                                <Pencil className='mr-2 size-4' />
+                        <DropdownMenuContent align="end" className="text-xs">
+                            <DropdownMenuItem
+                                className="text-xs"
+                                onClick={() => onEdit(portfolio)}
+                            >
+                                <Pencil className="mr-2 size-3.5" />
                                 Edit
                             </DropdownMenuItem>
                             <DropdownMenuSeparator />
                             <DropdownMenuItem
-                                className='text-destructive'
-                                onClick={() => onDelete(portfolio)}>
-                                <Trash2 className='mr-2 size-4' />
+                                className="text-xs text-destructive focus:text-destructive"
+                                onClick={() => onDelete(portfolio)}
+                            >
+                                <Trash2 className="mr-2 size-3.5" />
                                 Delete
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>
                 </div>
             </CardHeader>
-            <CardContent className='pt-0'>
-                <p className='mb-4 text-sm text-muted-foreground line-clamp-2'>
-                    {portfolio.description}
-                </p>
-                <div className='flex items-end justify-between'>
-                    <div>
-                        <p className='text-2xl font-semibold'>
-                            ${formatNumber(portfolio.totalValue)}
-                        </p>
-                        <div className='mt-1 flex items-center gap-2'>
-                            <Badge
-                                variant='secondary'
-                                className={
-                                    portfolio.change >= 0
-                                        ? 'bg-success/10 text-success hover:bg-success/20'
-                                        : 'bg-destructive/10 text-destructive hover:bg-destructive/20'
-                                }>
-                                {portfolio.change >= 0 ? '+' : ''}
-                                {portfolio.change.toFixed(2)}%
-                            </Badge>
-                            <span className='text-xs text-muted-foreground'>
-                                Updated {portfolio.lastUpdated}
-                            </span>
+
+            <CardContent className="pt-0">
+                {portfolio.description && (
+                    <p className="mb-3 text-xs leading-relaxed text-muted-foreground line-clamp-2">
+                        {portfolio.description}
+                    </p>
+                )}
+
+                <div className="border-t border-border/50 pt-3">
+                    <div className="flex items-end justify-between">
+                        <div>
+                            <p className="font-serif text-[22px] font-medium leading-none tracking-tight">
+                                ${formatNumber(portfolio.totalValue)}
+                            </p>
+                            <div className="mt-1.5 flex items-center gap-1.5">
+                                <span
+                                    className={`inline-block size-1.5 rounded-full ${isPositive ? "bg-success" : "bg-destructive"}`}
+                                />
+                                <span
+                                    className={`text-[11px] font-medium ${isPositive ? "text-success" : "text-destructive"}`}
+                                >
+                                    {isPositive ? "+" : ""}
+                                    {portfolio.change.toFixed(2)}%
+                                </span>
+                                <span className="text-[10px] text-muted-foreground">
+                                    · {portfolio.lastUpdated}
+                                </span>
+                            </div>
                         </div>
+
+                        <Link href={`/dashboard/portfolio/${portfolio.id}`}>
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-7 gap-0.5 text-xs text-muted-foreground hover:text-foreground"
+                            >
+                                View
+                                <ChevronRight className="size-3" />
+                            </Button>
+                        </Link>
                     </div>
-                    <Link href={`/dashboard/portfolio/${portfolio.id}`}>
-                        <Button variant='ghost' size='sm' className='gap-1'>
-                            View
-                            <ChevronRight className='size-4' />
-                        </Button>
-                    </Link>
                 </div>
             </CardContent>
         </Card>
