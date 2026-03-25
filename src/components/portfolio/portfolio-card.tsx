@@ -19,6 +19,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { formatNumber } from '@/lib/format';
 import { Portfolio } from '@/types/portfolio';
+import Link from 'next/link';
 
 interface PortfolioCardProps {
     portfolio: Portfolio;
@@ -98,10 +99,12 @@ export function PortfolioCard({
                             </span>
                         </div>
                     </div>
-                    <Button variant='ghost' size='sm' className='gap-1'>
-                        View
-                        <ChevronRight className='size-4' />
-                    </Button>
+                    <Link href={`/dashboard/portfolio/${portfolio.id}`}>
+                        <Button variant='ghost' size='sm' className='gap-1'>
+                            View
+                            <ChevronRight className='size-4' />
+                        </Button>
+                    </Link>
                 </div>
             </CardContent>
         </Card>

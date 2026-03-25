@@ -28,7 +28,7 @@ export const navigationData = {
         },
         {
             title: 'Transactions',
-            url: '#',
+            url: '/dashboard/transactions',
             icon: <Receipt />,
         },
     ],
