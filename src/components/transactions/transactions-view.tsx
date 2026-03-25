@@ -116,7 +116,7 @@ export function TransactionsView({
     }
 
     return (
-        <div className='space-y-6 m-5'>
+        <div className='space-y-6'>
             <DashboardPageHeader
                 title='Transactions'
                 description='Track all your buy and sell activities'>

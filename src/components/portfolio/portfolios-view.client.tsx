@@ -38,7 +38,7 @@ export function PortfoliosViewClient({
     };
 
     return (
-        <div className='space-y-6 m-5'>
+        <div className='space-y-6'>
             <DashboardPageHeader
                 title='Portfolios'
                 description='Manage your investment portfolios'>

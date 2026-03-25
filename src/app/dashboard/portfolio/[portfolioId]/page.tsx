@@ -9,7 +9,10 @@ export default async function Page({
 
     return (
         <>
-            <DashboardPageHeader title='Portfolio details' />
+            <DashboardPageHeader
+                title='Portfolio details'
+                description='Detailed view of your assets, performance, and allocation.'
+            />
             <div>{portfolioId}</div>
         </>
     );

@@ -1,5 +1,3 @@
-'use client';
-
 import { TooltipProvider } from '@/components/ui/tooltip';
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar';
 import { AppSidebar } from '@/components/layout/app-sidebar';
@@ -9,9 +7,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <TooltipProvider>
             <SidebarProvider defaultOpen={true}>
                 <AppSidebar />
-                <SidebarInset>
-                    {children}
-                </SidebarInset>
+                <SidebarInset>{children}</SidebarInset>
             </SidebarProvider>
         </TooltipProvider>
     );
