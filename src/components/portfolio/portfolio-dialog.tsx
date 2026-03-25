@@ -14,9 +14,13 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Portfolio } from '@/types/portfolio';
 import { useForm } from 'react-hook-form';
-import { startTransition, useEffect, useTransition } from 'react';
-import { createPortoflioAction } from '@/actions/portfolio';
+import { useEffect, useTransition } from 'react';
+import {
+    createPortfolioAction,
+    updatePortfolioAction,
+} from '@/actions/portfolio';
 import Spinner from '../ui/spinner';
+import { useRouter } from 'next/navigation';
 
 interface PortfolioDialogProps {
     open: boolean;
@@ -35,7 +39,8 @@ export function PortfolioDialog({
     editingPortfolio,
 }: PortfolioDialogProps) {
     const isEditing = editingPortfolio !== null;
-    const [isPending, startStransition] = useTransition();
+    const router = useRouter();
+    const [isPending, startTransition] = useTransition();
     const {
         register,
         handleSubmit,
@@ -65,9 +70,18 @@ export function PortfolioDialog({
     const onSubmit = (data: FormValues) => {
         startTransition(async () => {
             try {
-                await createPortoflioAction(data);
+                if (isEditing && editingPortfolio) {
+                    await updatePortfolioAction({
+                        id: editingPortfolio.id,
+                        ...data,
+                    });
+                } else {
+                    await createPortfolioAction(data);
+                }
+
                 onOpenChange(false);
                 reset();
+                router.refresh();
             } catch (err) {
                 console.error(err);
             }

@@ -1,10 +1,10 @@
 export interface Portfolio {
-    id: number;
+    id: string;
     name: string;
-    description: string;
-    totalValue: number;
-    totalInvested: number;
-    change: number;
+    description?: string;
     assets: number;
     lastUpdated: string;
+    totalValue: number;
+    totalInvested?: number;
+    change: number;
 }
