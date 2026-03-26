@@ -12,7 +12,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Asset, Portfolio, TransactionType } from '@/types/transactions';
+import { Asset, Portfolio } from '@/types/transactions';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import {
@@ -27,16 +27,6 @@ interface AddTransactionDialogProps {
     portfolios: Portfolio[];
     assets: Asset[];
     triggerClassName?: string;
-    onAdd?: (data: {
-        type: TransactionType;
-        assetId: string;
-        quantity: number;
-        price: number;
-        date: string;
-    }) => void;
-    onFetchCurrentPrice?: (
-        assetQuery: string,
-    ) => Promise<number | null> | number | null;
 }
 
 export function AddTransactionDialog({
