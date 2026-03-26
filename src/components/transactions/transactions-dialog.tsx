@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,9 +13,15 @@ import {
     DialogTrigger,
 } from '@/components/ui/dialog';
 import { Asset, Portfolio, TransactionType } from '@/types/transactions';
-import { TransactionsDialogAssetFields } from './transactions-dialog-asset-fields';
-import { TransactionsDialogBasicFields } from './transactions-dialog-basic-fields';
-import { TransactionsDialogQuantityPriceFields } from './transactions-dialog-quantity-price-fields';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '../ui/select';
 
 interface AddTransactionDialogProps {
     portfolios: Portfolio[];
@@ -29,7 +35,7 @@ interface AddTransactionDialogProps {
         date: string;
     }) => void;
     onFetchCurrentPrice?: (
-        assetQuery: string
+        assetQuery: string,
     ) => Promise<number | null> | number | null;
 }
 
@@ -37,87 +43,8 @@ export function AddTransactionDialog({
     portfolios,
     assets,
     triggerClassName,
-    onAdd,
-    onFetchCurrentPrice,
 }: AddTransactionDialogProps) {
     const [open, setOpen] = useState(false);
-    const [type, setType] = useState<TransactionType>('BUY');
-    const [selectedPortfolioId, setSelectedPortfolioId] = useState('');
-    const [assetInput, setAssetInput] = useState('');
-    const [quantity, setQuantity] = useState('');
-    const [price, setPrice] = useState('');
-    const [date, setDate] = useState('');
-    const [isFetchingPrice, setIsFetchingPrice] = useState(false);
-    const [fetchPriceError, setFetchPriceError] = useState<string | null>(null);
-
-    // Filter assets by selected portfolio
-    const filteredAssets = selectedPortfolioId
-        ? assets.filter((a) => a.portfolioId === selectedPortfolioId)
-        : assets;
-
-    const normalizedAssetInput = assetInput.trim().toLowerCase();
-
-    const matchedAsset = useMemo(
-        () =>
-            filteredAssets.find((a) => {
-                const byId = a.id.toLowerCase() === normalizedAssetInput;
-                const bySymbol = a.symbol.toLowerCase() === normalizedAssetInput;
-                const byName = a.name.toLowerCase() === normalizedAssetInput;
-                return byId || bySymbol || byName;
-            }),
-        [filteredAssets, normalizedAssetInput]
-    );
-
-    const resolvedAssetId = matchedAsset?.id ?? assetInput.trim();
-
-    function handleSubmit() {
-        if (!resolvedAssetId || !quantity || !price || !date) return;
-        onAdd?.({
-            type,
-            assetId: resolvedAssetId,
-            quantity: parseFloat(quantity),
-            price: parseFloat(price),
-            date,
-        });
-        setOpen(false);
-        // Reset
-        setType('BUY');
-        setSelectedPortfolioId('');
-        setAssetInput('');
-        setQuantity('');
-        setPrice('');
-        setDate('');
-        setFetchPriceError(null);
-    }
-
-    async function handleFetchCurrentPrice() {
-        const query = assetInput.trim();
-        if (!query) {
-            setFetchPriceError('Wpisz najpierw asset (np. BTC).');
-            return;
-        }
-
-        setFetchPriceError(null);
-        setIsFetchingPrice(true);
-        try {
-            let nextPrice: number | null = null;
-
-            if (onFetchCurrentPrice) {
-                nextPrice = await onFetchCurrentPrice(query);
-            } else if (matchedAsset?.lastPrice != null) {
-                nextPrice = matchedAsset.lastPrice;
-            }
-
-            if (nextPrice == null || Number.isNaN(nextPrice)) {
-                setFetchPriceError('Nie udało się pobrać aktualnej ceny.');
-                return;
-            }
-
-            setPrice(String(nextPrice));
-        } finally {
-            setIsFetchingPrice(false);
-        }
-    }
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -135,46 +62,93 @@ export function AddTransactionDialog({
                     </DialogDescription>
                 </DialogHeader>
                 <div className='grid gap-5 py-4'>
-                    <TransactionsDialogBasicFields
-                        type={type}
-                        date={date}
-                        onTypeChange={setType}
-                        onDateChange={setDate}
-                    />
+                    <div className='grid grid-cols-2 gap-4'>
+                        <div className='grid gap-2'>
+                            <Label>Type</Label>
+                            <Select>
+                                <SelectTrigger className='border-border/50 bg-secondary'>
+                                    <SelectValue placeholder='Select type' />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value='BUY'>Buy</SelectItem>
+                                    <SelectItem value='SELL'>Sell</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className='grid gap-2'>
+                            <Label>Date</Label>
+                            <Input
+                                type='date'
+                                className='border-border/50 bg-secondary'
+                            />
+                        </div>
+                    </div>
 
-                    <TransactionsDialogAssetFields
-                        portfolios={portfolios}
-                        filteredAssets={filteredAssets}
-                        selectedPortfolioId={selectedPortfolioId}
-                        assetInput={assetInput}
-                        matchedAssetCurrency={matchedAsset?.currency}
-                        fetchPriceError={fetchPriceError}
-                        onPortfolioChange={(value) => {
-                            setSelectedPortfolioId(value);
-                            setAssetInput('');
-                            setFetchPriceError(null);
-                        }}
-                        onAssetInputChange={(value) => {
-                            setAssetInput(value);
-                            setFetchPriceError(null);
-                        }}
-                    />
+                    <div className='grid gap-2'>
+                        <Label>Portfolio</Label>
+                        <Select>
+                            <SelectTrigger className='border-border/50 bg-secondary'>
+                                <SelectValue placeholder='Select portfolio' />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {portfolios.map((portfolio) => (
+                                    <SelectItem
+                                        key={portfolio.id}
+                                        value={portfolio.id}>
+                                        {portfolio.name}
+                                    </SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
 
-                    <TransactionsDialogQuantityPriceFields
-                        quantity={quantity}
-                        price={price}
-                        assetInput={assetInput}
-                        isFetchingPrice={isFetchingPrice}
-                        onQuantityChange={setQuantity}
-                        onPriceChange={setPrice}
-                        onFetchCurrentPrice={handleFetchCurrentPrice}
-                    />
+                    <div className='grid gap-2'>
+                        <Label htmlFor='asset-input'>Asset</Label>
+                        <Input
+                            id='asset-input'
+                            placeholder='Np. BTC, AAPL, ETH'
+                            list='asset-suggestions'
+                            className='border-border/50 bg-secondary'
+                        />
+                    </div>
+
+                    <div className='grid grid-cols-2 gap-4'>
+                        <div className='grid gap-2'>
+                            <div className='flex h-8 items-center'>
+                                <Label>Quantity</Label>
+                            </div>
+                            <Input
+                                type='number'
+                                placeholder='0.00'
+                                className='border-border/50 bg-secondary'
+                            />
+                        </div>
+                        <div className='grid gap-2'>
+                            <div className='flex h-8 items-center justify-between gap-2'>
+                                <Label>Unit Price</Label>
+                                <Button
+                                    type='button'
+                                    size='sm'
+                                    variant='outline'
+                                    className='h-8 px-2 text-xs'>
+                                    Pobierz cenę
+                                </Button>
+                            </div>
+                            <Input
+                                type='number'
+                                placeholder='0.00'
+                                className='border-border/50 bg-secondary'
+                            />
+                        </div>
+                    </div>
                 </div>
                 <DialogFooter>
                     <Button variant='outline' onClick={() => setOpen(false)}>
                         Cancel
                     </Button>
-                    <Button onClick={handleSubmit}>Add Transaction</Button>
+                    <Button onClick={() => setOpen(false)}>
+                        Add Transaction
+                    </Button>
                 </DialogFooter>
             </DialogContent>
         </Dialog>
