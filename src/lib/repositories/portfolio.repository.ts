@@ -48,7 +48,6 @@ export const portfolioRepository = {
                 assets: {
                     select: {
                         id: true,
-                        estimatedValue: true,
                         createdAt: true,
                         lastPrice: true,
                         lastPriceAt: true,

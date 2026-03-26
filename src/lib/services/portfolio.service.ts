@@ -89,19 +89,16 @@ export async function getUserPortfolios(userId: string) {
                   )
                 : null;
 
-        // current value = suma estimatedValue assetów
+        // Portfolio value (uproczczone): suma lastPrice assetów.
+        // Model `Asset` w Prisma nie ma pola `estimatedValue`, więc bazujemy tylko na lastPrice.
         const currentValue = assets.reduce(
-            (sum, asset) => sum + (asset.estimatedValue ?? 0),
+            (sum, asset) => sum + (asset.lastPrice ?? 0),
             0,
         );
 
-        // baseline = suma ostatnich cen assetów (używane jako prosty "invested" przy uproszczonych danych)
-        // uwaga: jeśli ostatnia cena nie istnieje, ignorujemy asset
-        const lastPriceTotal = assets.reduce((sum, asset) => {
-            if (!asset.lastPrice || !asset.estimatedValue) return sum;
-            // wyciągamy poprzednią wartość na podstawie lastPrice
-            return sum + asset.lastPrice; // prosty przykład
-        }, 0);
+        // Baseline = suma lastPrice (używane jako "invested" przy uproszczonych danych).
+        // Bez snapshotów/ilości, nie da się policzyć realnego zysku — więc change wyjdzie 0.
+        const lastPriceTotal = currentValue;
 
         const totalInvested = lastPriceTotal;
 

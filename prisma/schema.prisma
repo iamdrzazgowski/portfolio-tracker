@@ -111,14 +111,12 @@ model Asset {
   currency       String
   lastPrice      Float?
   lastPriceAt    DateTime?
-  estimatedValue Float?
   portfolioId    String
   createdAt      DateTime @default(now())
   updatedAt      DateTime @updatedAt
 
   portfolio     Portfolio     @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
   transactions  Transaction[]
-  prices        AssetPrice[]
 
   @@index([symbol])
   @@index([portfolioId])
@@ -154,14 +152,3 @@ model PortfolioSnapshot {
   @@index([portfolioId])
 }
 
-model AssetPrice {
-  id       String   @id @default(cuid())
-  assetId  String
-  price    Float
-  date     DateTime
-  createdAt DateTime @default(now())
-
-  asset Asset @relation(fields: [assetId], references: [id], onDelete: Cascade)
-
-  @@index([assetId, date])
-}
