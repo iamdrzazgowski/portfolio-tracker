@@ -36,7 +36,7 @@ export async function GET(req: Request) {
             id: coin.id,
         }));
 
-        return NextResponse.json([...stocks, ...cryptos].slice(0, 10));
+        return NextResponse.json([...stocks, ...cryptos]);
     } catch (err) {
         return NextResponse.json([]);
     }
