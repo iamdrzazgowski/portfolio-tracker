@@ -46,7 +46,6 @@ export function TransactionsView({
                     </Button>
                     <AddTransactionDialog
                         portfolios={portfolios}
-                        assets={assets}
                         triggerClassName='w-full sm:w-auto'
                     />
                 </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, useTransition } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -23,6 +23,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '../ui/select';
+import { createTransactionAction } from '@/actions/transaction';
+import { useRouter } from 'next/navigation';
 
 interface AddTransactionDialogProps {
     portfolios: Portfolio[];
@@ -46,20 +48,22 @@ export function AddTransactionDialog({
     const [assetQuery, setAssetQuery] = useState('');
     const [suggestions, setSuggestions] = useState<any[]>([]);
     const [selectedAsset, setSelectedAsset] = useState<any>(null);
-    const [price, setPrice] = useState('');
+    const [isPending, startTransition] = useTransition();
+    const router = useRouter();
 
     const assetInputRef = useRef<HTMLInputElement>(null);
 
-    const { control, handleSubmit, setValue, watch } = useForm<FormValues>({
-        defaultValues: {
-            type: 'BUY',
-            date: '',
-            portfolioId: '',
-            asset: null,
-            quantity: 0,
-            price: 0,
-        },
-    });
+    const { control, handleSubmit, setValue, watch, reset } =
+        useForm<FormValues>({
+            defaultValues: {
+                type: 'BUY',
+                date: '',
+                portfolioId: '',
+                asset: null,
+                quantity: 0,
+                price: 0,
+            },
+        });
 
     const watchAsset = watch('asset');
 
@@ -94,13 +98,16 @@ export function AddTransactionDialog({
             `/api/assets/price?symbol=${watchAsset.symbol}&type=${watchAsset.type}&cryptoId=${watchAsset.id || ''}`,
         );
         const data = await res.json();
-        setPrice(data?.price != null ? String(data.price) : '');
         setValue('price', data?.price ?? 0);
     };
 
-    const onSubmit = (data: FormValues) => {
-        console.log('Transaction submitted:', data);
-        setOpen(false);
+    const onSubmit = (data: FormValues | FormData) => {
+        startTransition(async () => {
+            createTransactionAction(data);
+            setOpen(false);
+            reset();
+            router.refresh();
+        });
     };
 
     return (

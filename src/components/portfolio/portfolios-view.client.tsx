@@ -19,7 +19,7 @@ export function PortfoliosViewClient({
     const [editingPortfolio, setEditingPortfolio] = useState<Portfolio | null>(
         null,
     );
-    const [, startTransition] = useTransition();
+    const [isPending, startTransition] = useTransition();
 
     const handleEdit = (portfolio: Portfolio) => {
         setEditingPortfolio(portfolio);

@@ -101,13 +101,6 @@ export function TransactionRow({
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align='end' className='text-xs'>
-                        {/* <DropdownMenuItem
-                            className='text-xs'
-                            onClick={() => onEdit?.(transaction)}>
-                            <Pencil className='mr-2 size-3.5' />
-                            Edit
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator /> */}
                         <DropdownMenuItem
                             className='text-xs text-destructive focus:text-destructive'
                             onClick={() => onDelete?.(transaction.id)}>

@@ -21,16 +21,34 @@ export interface Asset {
     portfolio: Portfolio;
 }
 
+// export interface Transaction {
+//     id: string;
+//     type: TransactionType;
+//     quantity: number;
+//     price: number;
+//     date: Date;
+//     assetId: string;
+//     createdAt: Date;
+//     updatedAt: Date;
+//     asset: Asset;
+// }
+
 export interface Transaction {
     id: string;
-    type: TransactionType;
+    type: 'BUY' | 'SELL';
     quantity: number;
     price: number;
     date: Date;
-    assetId: string;
-    createdAt: Date;
-    updatedAt: Date;
-    asset: Asset;
+    asset: {
+        name: string;
+        symbol: string;
+        type: string;
+        currency: string; // ✅ dodaj
+        portfolio: {
+            id: string;
+            name: string;
+        };
+    };
 }
 
 // Derived helpers
