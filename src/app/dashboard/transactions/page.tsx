@@ -1,15 +1,14 @@
+import { getPortfoliosAction } from '@/actions/portfolio';
 import { TransactionsView } from '@/components/transactions/transactions-view';
-import {
-    mockTransactions,
-    mockPortfolios,
-    mockAssets,
-} from '@/data/mock-transactions';
+import { mockTransactions, mockAssets } from '@/data/mock-transactions';
 
 export default async function TransactionsPage() {
+    const userPortfolios = await getPortfoliosAction();
+    console.log(userPortfolios);
     return (
         <TransactionsView
             initialTransactions={mockTransactions}
-            portfolios={mockPortfolios}
+            portfolios={userPortfolios}
             assets={mockAssets}
         />
     );
