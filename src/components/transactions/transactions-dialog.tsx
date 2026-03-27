@@ -103,10 +103,15 @@ export function AddTransactionDialog({
 
     const onSubmit = (data: FormValues | FormData) => {
         startTransition(async () => {
-            createTransactionAction(data);
-            setOpen(false);
-            reset();
-            router.refresh();
+            const result = await createTransactionAction(data);
+
+            if (result.success) {
+                setOpen(false);
+                reset();
+                router.refresh();
+            } else {
+                console.error(result.error);
+            }
         });
     };
 

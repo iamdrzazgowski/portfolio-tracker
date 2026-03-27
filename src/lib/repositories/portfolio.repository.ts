@@ -45,12 +45,20 @@ export const portfolioRepository = {
                 id: true,
                 name: true,
                 description: true,
+                updatedAt: true,
                 assets: {
                     select: {
                         id: true,
                         createdAt: true,
                         lastPrice: true,
                         lastPriceAt: true,
+                        transactions: {
+                            select: {
+                                type: true,
+                                quantity: true,
+                                price: true,
+                            },
+                        },
                     },
                 },
             },

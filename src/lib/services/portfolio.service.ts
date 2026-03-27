@@ -79,7 +79,6 @@ export async function getUserPortfolios(userId: string) {
         const assets = portfolio.assets;
         const assetsCount = assets.length;
 
-        // ostatni update (kiedy dodano asseta)
         const lastUpdated =
             assets.length > 0
                 ? assets.reduce(
@@ -89,22 +88,46 @@ export async function getUserPortfolios(userId: string) {
                   )
                 : null;
 
-        // Portfolio value (uproczczone): suma lastPrice assetów.
-        // Model `Asset` w Prisma nie ma pola `estimatedValue`, więc bazujemy tylko na lastPrice.
-        const currentValue = assets.reduce(
-            (sum, asset) => sum + (asset.lastPrice ?? 0),
-            0,
-        );
+        let totalInvested = 0;
+        let currentValue = 0;
 
-        // Baseline = suma lastPrice (używane jako "invested" przy uproszczonych danych).
-        // Bez snapshotów/ilości, nie da się policzyć realnego zysku — więc change wyjdzie 0.
-        const lastPriceTotal = currentValue;
+        for (const asset of assets) {
+            // Ile akcji faktycznie posiadamy (BUY - SELL)
+            const quantity = asset.transactions.reduce((sum, t) => {
+                return t.type === 'BUY' ? sum + t.quantity : sum - t.quantity;
+            }, 0);
 
-        const totalInvested = lastPriceTotal;
+            // Średnia cena zakupu (weighted average)
+            const buyTransactions = asset.transactions.filter(
+                (t) => t.type === 'BUY',
+            );
+            const totalBuyValue = buyTransactions.reduce(
+                (sum, t) => sum + t.quantity * t.price,
+                0,
+            );
+            const totalBuyQuantity = buyTransactions.reduce(
+                (sum, t) => sum + t.quantity,
+                0,
+            );
+            const avgBuyPrice =
+                totalBuyQuantity > 0 ? totalBuyValue / totalBuyQuantity : 0;
 
-        const growth =
-            lastPriceTotal > 0
-                ? ((currentValue - lastPriceTotal) / lastPriceTotal) * 100
+            // Aktualna cena (lastPrice z giełdy lub ostatnia cena transakcji jako fallback)
+            const currentPrice =
+                asset.lastPrice ?? asset.transactions.at(-1)?.price ?? 0;
+
+            totalInvested += avgBuyPrice * quantity;
+            currentValue += currentPrice * quantity;
+        }
+
+        const change =
+            totalInvested > 0
+                ? Number(
+                      (
+                          ((currentValue - totalInvested) / totalInvested) *
+                          100
+                      ).toFixed(2),
+                  )
                 : 0;
 
         return {
@@ -113,9 +136,9 @@ export async function getUserPortfolios(userId: string) {
             description: portfolio.description ?? undefined,
             assets: assetsCount,
             lastUpdated: lastUpdated ? lastUpdated.toISOString() : '',
-            totalValue: currentValue,
-            totalInvested,
-            change: Number(growth.toFixed(2)),
+            totalValue: Number(currentValue.toFixed(2)),
+            totalInvested: Number(totalInvested.toFixed(2)),
+            change,
         };
     });
 }

@@ -17,16 +17,12 @@ export interface CreateTransactionInput {
 
 export const transactionRepository = {
     async createWithAsset(input: CreateTransactionInput) {
-        console.log(input);
         const existingAsset = await prisma.asset.findFirst({
             where: {
                 symbol: input.assetSymbol,
                 portfolioId: input.portfolioId,
             },
         });
-
-        console.log('existingAsset:', existingAsset);
-        console.log('input:', input);
 
         const result = await prisma.transaction.create({
             data: {
