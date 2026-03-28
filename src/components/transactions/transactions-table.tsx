@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Table, TableBody } from "@/components/ui/table";
-import { Transaction, TransactionType } from "@/types/transactions";
-import { EmptyTransactionsState } from "./empty-transactions-state";
-import { TransactionRow } from "./transaction-row";
-import { TransactionsTableHeader } from "./transactions-table-header";
-import { TransactionsToolbar } from "./transactions-toolbar";
+import { useState, useTransition } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Table, TableBody } from '@/components/ui/table';
+import { Transaction, TransactionType } from '@/types/transactions';
+import { EmptyTransactionsState } from './empty-transactions-state';
+import { TransactionRow } from './transaction-row';
+import { TransactionsTableHeader } from './transactions-table-header';
+import { TransactionsToolbar } from './transactions-toolbar';
+import { deleteTransactionAction } from '@/actions/transaction';
 
 interface TransactionsTableProps {
     transactions: Transaction[];
@@ -15,18 +16,21 @@ interface TransactionsTableProps {
     onDelete?: (id: string) => void;
 }
 
-type FilterValue = "all" | TransactionType;
+type FilterValue = 'all' | TransactionType;
 
-export function TransactionsTable({
-    transactions,
-    onEdit,
-    onDelete,
-}: TransactionsTableProps) {
-    const [filter, setFilter] = useState<FilterValue>("all");
-    const [search, setSearch] = useState("");
+export function TransactionsTable({ transactions }: TransactionsTableProps) {
+    const [filter, setFilter] = useState<FilterValue>('all');
+    const [search, setSearch] = useState('');
+    const [isPending, startTransition] = useTransition();
+
+    function handleDelete(id: string) {
+        startTransition(async () => {
+            await deleteTransactionAction(id);
+        });
+    }
 
     const filtered = transactions
-        .filter((t) => filter === "all" || t.type === filter)
+        .filter((t) => filter === 'all' || t.type === filter)
         .filter((t) => {
             if (!search) return true;
             const q = search.toLowerCase();
@@ -38,8 +42,8 @@ export function TransactionsTable({
         });
 
     return (
-        <Card className="border border-border/50 bg-card shadow-none">
-            <CardHeader className="px-4 pb-4 pt-5 sm:px-5">
+        <Card className='border border-border/50 bg-card shadow-none'>
+            <CardHeader className='px-4 pb-4 pt-5 sm:px-5'>
                 <TransactionsToolbar
                     search={search}
                     filter={filter}
@@ -47,17 +51,16 @@ export function TransactionsTable({
                     onFilterChange={setFilter}
                 />
             </CardHeader>
-            <CardContent className="p-0">
-                <div className="overflow-x-auto">
-                    <Table className="min-w-[680px] [&_td]:py-2.5 [&_th]:py-2.5 sm:min-w-0">
+            <CardContent className='p-0'>
+                <div className='overflow-x-auto'>
+                    <Table className='min-w-[680px] [&_td]:py-2.5 [&_th]:py-2.5 sm:min-w-0'>
                         <TransactionsTableHeader />
                         <TableBody>
                             {filtered.map((transaction) => (
                                 <TransactionRow
                                     key={transaction.id}
                                     transaction={transaction}
-                                    onEdit={onEdit}
-                                    onDelete={onDelete}
+                                    onDelete={handleDelete}
                                 />
                             ))}
                             {filtered.length === 0 && (

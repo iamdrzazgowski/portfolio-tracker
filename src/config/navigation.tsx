@@ -41,17 +41,17 @@ export const navigationData = {
     assets: [
         {
             title: 'Stocks',
-            url: '#',
+            url: '/dashboard/stocks',
             icon: <TrendingUp />,
         },
         {
             title: 'Crypto',
-            url: '#',
+            url: '/dashboard/crypto',
             icon: <Coins />,
         },
         {
             title: 'ETFs',
-            url: '#',
+            url: '/dashboard/etfs',
             icon: <ChartColumn />,
         },
     ],

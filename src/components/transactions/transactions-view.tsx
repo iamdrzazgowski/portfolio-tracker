@@ -20,17 +20,17 @@ export function TransactionsView({
     transactions,
     portfolios,
 }: TransactionsViewProps) {
-    const [isPending, startTransition] = useTransition();
+    // const [isPending, startTransition] = useTransition();
 
-    function handleDelete(id: string) {
-        startTransition(async () => {
-            await deleteTransactionAction(id);
-        });
-    }
+    // function handleDelete(id: string) {
+    //     startTransition(async () => {
+    //         await deleteTransactionAction(id);
+    //     });
+    // }
 
-    function handleEdit(tx: Transaction) {
-        console.log('Edit', tx);
-    }
+    // function handleEdit(tx: Transaction) {
+    //     console.log('Edit', tx);
+    // }
 
     return (
         <div className='space-y-6'>
@@ -51,11 +51,7 @@ export function TransactionsView({
                     />
                 </div>
             </DashboardPageHeader>
-            <TransactionsTable
-                transactions={transactions}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-            />
+            <TransactionsTable transactions={transactions} />
         </div>
     );
 }
