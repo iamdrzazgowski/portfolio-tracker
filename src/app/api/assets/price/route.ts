@@ -1,14 +1,16 @@
+import { NextResponse } from 'next/server';
+
 export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
 
-    const symbol = searchParams.get("symbol");
-    const type = searchParams.get("type");
-    const cryptoId = searchParams.get("cryptoId");
+    const symbol = searchParams.get('symbol');
+    const type = searchParams.get('type');
+    const cryptoId = searchParams.get('cryptoId');
     const finnhubApiKey =
         process.env.STOCK_API_KEY ?? process.env.STOCK_API_KEY;
 
     try {
-        if (type === "STOCK" || type === "ETF") {
+        if (type === 'STOCK' || type === 'ETF') {
             if (!symbol || !finnhubApiKey) {
                 return Response.json({ price: null });
             }
@@ -21,7 +23,7 @@ export async function GET(req: Request) {
             return Response.json({ price: data.c });
         }
 
-        if (type === "CRYPTO" && cryptoId) {
+        if (type === 'CRYPTO' && cryptoId) {
             const res = await fetch(
                 `https://api.coingecko.com/api/v3/simple/price?ids=${cryptoId}&vs_currencies=usd`,
             );
@@ -32,8 +34,8 @@ export async function GET(req: Request) {
             });
         }
 
-        return Response.json({ price: null });
+        return NextResponse.json({ price: null });
     } catch {
-        return Response.json({ price: null });
+        return NextResponse.json({ price: null });
     }
 }
