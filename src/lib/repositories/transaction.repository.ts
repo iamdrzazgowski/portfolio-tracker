@@ -46,7 +46,6 @@ export const transactionRepository = {
             include: { asset: true },
         });
 
-        console.log('created transaction:', result);
         return result;
     },
 
@@ -82,6 +81,14 @@ export const transactionRepository = {
             },
             orderBy: {
                 date: 'desc',
+            },
+        });
+    },
+
+    async delete(id: string) {
+        return prisma.transaction.delete({
+            where: {
+                id,
             },
         });
     },

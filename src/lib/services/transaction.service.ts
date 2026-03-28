@@ -36,6 +36,10 @@ export const transactionService = {
         });
     },
 
+    async deleteTransaction(id: string) {
+        return transactionRepository.delete(id);
+    },
+
     async getTransactionsByUserId(userId: string) {
         const transactions =
             await transactionRepository.findManyByUserId(userId);
