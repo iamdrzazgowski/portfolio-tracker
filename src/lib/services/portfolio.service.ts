@@ -79,15 +79,7 @@ export async function getUserPortfolios(userId: string) {
         const assets = portfolio.assets;
         const assetsCount = assets.length;
 
-        const lastUpdated =
-            assets.length > 0
-                ? assets.reduce(
-                      (latest, asset) =>
-                          asset.createdAt > latest ? asset.createdAt : latest,
-                      assets[0].createdAt,
-                  )
-                : null;
-
+        const lastUpdated = portfolio.updatedAt;
         let totalInvested = 0;
         let currentValue = 0;
 

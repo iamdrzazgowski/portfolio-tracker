@@ -30,20 +30,26 @@ export const transactionRepository = {
                 quantity: input.quantity,
                 price: input.price,
                 date: input.date,
-                asset: {
-                    connectOrCreate: {
-                        where: { id: existingAsset?.id ?? 'not-found' },
-                        create: {
-                            name: input.assetName,
-                            symbol: input.assetSymbol,
-                            type: input.assetType,
-                            currency: input.currency,
-                            portfolioId: input.portfolioId,
-                        },
-                    },
-                },
+                asset: existingAsset
+                    ? {
+                          connect: { id: existingAsset.id },
+                      }
+                    : {
+                          create: {
+                              name: input.assetName,
+                              symbol: input.assetSymbol,
+                              type: input.assetType,
+                              currency: input.currency,
+                              portfolioId: input.portfolioId,
+                          },
+                      },
             },
             include: { asset: true },
+        });
+
+        await prisma.portfolio.update({
+            where: { id: input.portfolioId },
+            data: {},
         });
 
         return result;

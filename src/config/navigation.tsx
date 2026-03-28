@@ -6,7 +6,6 @@ import {
     TrendingUp,
     Coins,
     ChartColumn,
-    Star,
 } from 'lucide-react';
 
 export const navigationData = {
@@ -54,11 +53,6 @@ export const navigationData = {
             title: 'ETFs',
             url: '#',
             icon: <ChartColumn />,
-        },
-        {
-            title: 'Collectibles',
-            url: '#',
-            icon: <Star />,
         },
     ],
 };
