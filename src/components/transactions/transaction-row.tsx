@@ -16,6 +16,7 @@ import {
     formatNumber,
     formatTransactionTotal,
 } from '../../lib/transactions-table.utils';
+import { AssetTypeBadge } from '../ui/asset-type-badge';
 
 interface TransactionRowProps {
     transaction: Transaction;
@@ -29,6 +30,7 @@ export function TransactionRow({
     onDelete,
 }: TransactionRowProps) {
     const isBuy = transaction.type === 'BUY';
+    console.log(transaction);
 
     return (
         <TableRow className='group border-t border-border/50 hover:bg-muted/30 transition-colors'>
@@ -47,6 +49,10 @@ export function TransactionRow({
                         {isBuy ? 'buy' : 'sell'}
                     </span>
                 </div>
+            </TableCell>
+
+            <TableCell className='hidden px-4 text-xs text-muted-foreground sm:table-cell'>
+                <AssetTypeBadge type={transaction.asset.type} />
             </TableCell>
 
             {/* Asset */}

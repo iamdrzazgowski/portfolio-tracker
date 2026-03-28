@@ -3,7 +3,6 @@ import { PortfoliosViewClient } from '@/components/portfolio/portfolios-view.cli
 
 export default async function PortfoliosView() {
     const portfolios = await getPortfoliosAction();
-    console.log(portfolios);
 
     return <PortfoliosViewClient portfolios={portfolios} />;
 }
