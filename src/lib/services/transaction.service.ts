@@ -19,7 +19,6 @@ export interface CreateTransactionDTO {
 
 export const transactionService = {
     async createTransaction(dto: CreateTransactionDTO) {
-        console.log('CREATE SERVICE: ', dto);
         if (dto.quantity <= 0)
             throw new Error('Quantity must be greater than 0');
         if (dto.price <= 0) throw new Error('Price must be greater than 0');

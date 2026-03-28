@@ -37,7 +37,7 @@ export async function deletePortfolio(data: {
 
     const result = await portfolioRepository.delete(data);
 
-    console.log(result);
+    return result;
 }
 
 export async function updatePortfolio(data: {

@@ -135,7 +135,6 @@ export function AddTransactionDialog({
                     onSubmit={handleSubmit(onSubmit)}
                     className='grid gap-5 py-4'>
                     <div className='grid grid-cols-2 gap-4'>
-                        {/* Type */}
                         <div className='grid gap-2'>
                             <Label>Type</Label>
                             <Controller
@@ -163,7 +162,6 @@ export function AddTransactionDialog({
                             />
                         </div>
 
-                        {/* Date */}
                         <div className='grid gap-2'>
                             <Label>Date</Label>
                             <Controller
@@ -180,7 +178,6 @@ export function AddTransactionDialog({
                         </div>
                     </div>
 
-                    {/* Portfolio */}
                     <div className='grid gap-2'>
                         <Label>Portfolio</Label>
                         <Controller
@@ -209,7 +206,6 @@ export function AddTransactionDialog({
                         />
                     </div>
 
-                    {/* Asset */}
                     <div className='grid gap-2 relative'>
                         <Label htmlFor='asset-input'>Asset</Label>
                         <Input
@@ -224,7 +220,6 @@ export function AddTransactionDialog({
                             }}
                         />
 
-                        {/* Suggestions dropdown */}
                         {suggestions.length > 0 && (
                             <div className='absolute top-full left-0 mt-1 border rounded-md max-h-40 overflow-y-auto z-50 bg-background w-full shadow'>
                                 {suggestions.map((asset, index) => (
@@ -246,7 +241,6 @@ export function AddTransactionDialog({
                     </div>
 
                     <div className='grid grid-cols-2 gap-4'>
-                        {/* Quantity */}
                         <div className='grid gap-2'>
                             <div className='flex h-8 items-center'>
                                 <Label>Quantity</Label>
@@ -265,7 +259,6 @@ export function AddTransactionDialog({
                             />
                         </div>
 
-                        {/* Price */}
                         <div className='grid gap-2'>
                             <div className='flex h-8 items-center justify-between gap-2'>
                                 <Label>Unit Price</Label>
