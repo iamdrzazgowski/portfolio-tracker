@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useTransition } from 'react';
-import { RefreshCw } from 'lucide-react';
+import { RefreshCw, TrendingUp, TrendingDown } from 'lucide-react';
 import { refreshPrices } from '@/actions/refreshPrices';
 import { getPortfolioKpis } from '@/actions/getPortfolioKpis';
 import { Button } from '@/components/ui/button';
@@ -34,23 +34,11 @@ export function KpiCards({ initial }: { initial: Kpis | null }) {
         });
     };
 
-    const cards = [
-        {
-            label: 'Total Value',
-            value: kpis ? fmt(kpis.totalValue) : '—',
-            accent: true,
-        },
-        {
-            label: 'Total Invested',
-            value: kpis ? fmt(kpis.totalInvested) : '—',
-            accent: false,
-        },
-        {
-            label: 'Total P/L',
-            value: kpis ? fmt(kpis.totalPL) : '—',
-            accent: false,
-        },
-    ];
+    const plPositive = kpis ? kpis.totalPL >= 0 : null;
+    const plPercent =
+        kpis && kpis.totalInvested > 0
+            ? (kpis.totalPL / kpis.totalInvested) * 100
+            : null;
 
     return (
         <div className='flex flex-col gap-3'>
@@ -79,32 +67,86 @@ export function KpiCards({ initial }: { initial: Kpis | null }) {
             </div>
 
             <div className='grid gap-3 sm:grid-cols-3'>
-                {cards.map((kpi) => (
-                    <div
-                        key={kpi.label}
-                        className={`rounded-xl border p-4 transition-opacity duration-300 ${
-                            isPending ? 'opacity-50' : 'opacity-100'
-                        } ${
-                            kpi.accent
-                                ? 'border-primary/40 bg-accent'
-                                : 'border-border/50 bg-card'
+                {/* Total Value */}
+                <div
+                    className={`rounded-xl border p-4 transition-opacity duration-300 ${
+                        isPending ? 'opacity-50' : 'opacity-100'
+                    } border-primary/40 bg-accent`}>
+                    <p className='text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground'>
+                        Total Value
+                    </p>
+                    <p className='mt-1.5 font-serif text-[22px] font-medium leading-none text-primary'>
+                        {kpis ? fmt(kpis.totalValue) : '—'}
+                    </p>
+                    <p className='mt-2.5 text-[11px] text-muted-foreground/50'>
+                        {lastUpdated
+                            ? `Updated ${lastUpdated.toLocaleTimeString()}`
+                            : 'Click Refresh to update'}
+                    </p>
+                </div>
+
+                {/* Total Invested */}
+                <div
+                    className={`rounded-xl border p-4 transition-opacity duration-300 ${
+                        isPending ? 'opacity-50' : 'opacity-100'
+                    } border-border/50 bg-card`}>
+                    <p className='text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground'>
+                        Total Invested
+                    </p>
+                    <p className='mt-1.5 font-serif text-[22px] font-medium leading-none text-foreground'>
+                        {kpis ? fmt(kpis.totalInvested) : '—'}
+                    </p>
+                    <p className='mt-2.5 text-[11px] text-muted-foreground/50'>
+                        {kpis ? 'Capital deployed' : 'No data yet'}
+                    </p>
+                </div>
+
+                {/* Total P/L */}
+                <div
+                    className={`rounded-xl border p-4 transition-opacity duration-300 ${
+                        isPending ? 'opacity-50' : 'opacity-100'
+                    } border-border/50 bg-card`}>
+                    <p className='text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground'>
+                        Total P/L
+                    </p>
+                    <p
+                        className={`mt-1.5 font-serif text-[22px] font-medium leading-none ${
+                            kpis === null
+                                ? 'text-muted-foreground/30'
+                                : plPositive
+                                  ? 'text-success'
+                                  : 'text-destructive'
                         }`}>
-                        <p className='text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground'>
-                            {kpi.label}
-                        </p>
-                        <p
-                            className={`mt-1.5 font-serif text-[22px] font-medium leading-none ${
-                                kpi.accent
-                                    ? 'text-primary'
-                                    : 'text-muted-foreground/30'
-                            }`}>
-                            {kpi.value}
-                        </p>
+                        {kpis
+                            ? `${plPositive ? '+' : ''}${fmt(kpis.totalPL)}`
+                            : '—'}
+                    </p>
+                    {kpis && plPercent !== null ? (
+                        <div className='mt-2.5 flex items-center gap-1'>
+                            {plPositive ? (
+                                <TrendingUp className='size-3 text-success' />
+                            ) : (
+                                <TrendingDown className='size-3 text-destructive' />
+                            )}
+                            <span
+                                className={`text-[11px] font-medium ${
+                                    plPositive
+                                        ? 'text-success'
+                                        : 'text-destructive'
+                                }`}>
+                                {plPositive ? '+' : ''}
+                                {plPercent.toFixed(2)}%
+                            </span>
+                            <span className='text-[10px] text-muted-foreground/50'>
+                                all time
+                            </span>
+                        </div>
+                    ) : (
                         <p className='mt-2.5 text-[11px] text-muted-foreground/50'>
-                            {kpis ? 'Live prices' : 'No data yet'}
+                            No data yet
                         </p>
-                    </div>
-                ))}
+                    )}
+                </div>
             </div>
         </div>
     );

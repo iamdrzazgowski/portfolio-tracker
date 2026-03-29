@@ -15,9 +15,7 @@ export async function refreshPrices() {
 
     for (const asset of assets) {
         const price = await fetchAssetPrice(asset);
-        console.log(
-            `[refresh] ${asset.symbol} (${asset.type}) cryptoId=${asset.cryptoId} → price=${price}`,
-        );
+
         if (price !== null) {
             await prisma.asset.update({
                 where: { id: asset.id },
