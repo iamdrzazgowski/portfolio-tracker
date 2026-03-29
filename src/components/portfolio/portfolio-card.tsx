@@ -117,7 +117,7 @@ export function PortfolioCard({
                             </div>
                         </div>
 
-                        <Link href={`/dashboard/portfolio/${portfolio.id}`}>
+                        {/* <Link href={`/dashboard/portfolio/${portfolio.id}`}>
                             <Button
                                 variant='ghost'
                                 size='sm'
@@ -125,7 +125,7 @@ export function PortfolioCard({
                                 View
                                 <ChevronRight className='size-3' />
                             </Button>
-                        </Link>
+                        </Link> */}
                     </div>
                 </div>
             </CardContent>
