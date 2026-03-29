@@ -1,6 +1,5 @@
 'use client';
 
-import { useState, useTransition } from 'react';
 import { Download } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { DashboardPageHeader } from '@/components/layout/dashboard-page-header';
@@ -8,7 +7,6 @@ import { DashboardPageHeader } from '@/components/layout/dashboard-page-header';
 import { Transaction, Portfolio, Asset } from '@/types/transactions';
 import { TransactionsTable } from './transactions-table';
 import { AddTransactionDialog } from './transactions-dialog';
-import { deleteTransactionAction } from '@/actions/transaction';
 
 interface TransactionsViewProps {
     initialTransactions: Transaction[];
@@ -20,18 +18,6 @@ export function TransactionsView({
     transactions,
     portfolios,
 }: TransactionsViewProps) {
-    // const [isPending, startTransition] = useTransition();
-
-    // function handleDelete(id: string) {
-    //     startTransition(async () => {
-    //         await deleteTransactionAction(id);
-    //     });
-    // }
-
-    // function handleEdit(tx: Transaction) {
-    //     console.log('Edit', tx);
-    // }
-
     return (
         <div className='space-y-6'>
             <DashboardPageHeader

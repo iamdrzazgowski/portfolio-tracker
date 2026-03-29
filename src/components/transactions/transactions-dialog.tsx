@@ -95,7 +95,7 @@ export function AddTransactionDialog({
         if (!watchAsset) return;
 
         const res = await fetch(
-            `/api/assets/price?symbol=${watchAsset.symbol}&type=${watchAsset.type}&cryptoId=${watchAsset.id || ''}`,
+            `/api/assets/price?symbol=${watchAsset.symbol}&type=${watchAsset.type}&cryptoId=${watchAsset.cryptoId || ''}`,
         );
         const data = await res.json();
         setValue('price', data?.price ?? 0);
