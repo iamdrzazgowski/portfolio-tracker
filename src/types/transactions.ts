@@ -12,6 +12,7 @@ export interface Asset {
     symbol: string;
     type: AssetType;
     currency: string;
+    cryptoId?: string | null;
     lastPrice?: number | null;
     lastPriceAt?: Date | null;
     estimatedValue?: number | null;
@@ -21,17 +22,12 @@ export interface Asset {
     portfolio: Portfolio;
 }
 
-// export interface Transaction {
-//     id: string;
-//     type: TransactionType;
-//     quantity: number;
-//     price: number;
-//     date: Date;
-//     assetId: string;
-//     createdAt: Date;
-//     updatedAt: Date;
-//     asset: Asset;
-// }
+export interface AssetSearchResult {
+    symbol: string;
+    name: string;
+    type: 'STOCK' | 'ETF' | 'CRYPTO' | 'COLLECTIBLE';
+    cryptoId?: string | null;
+}
 
 export interface Transaction {
     id: string;
@@ -43,7 +39,8 @@ export interface Transaction {
         name: string;
         symbol: string;
         type: string;
-        currency: string; // ✅ dodaj
+        currency: string;
+        cryptoId?: string | null;
         portfolio: {
             id: string;
             name: string;
@@ -51,7 +48,6 @@ export interface Transaction {
     };
 }
 
-// Derived helpers
 export function getTransactionTotal(tx: Transaction): number {
     return tx.quantity * tx.price;
 }

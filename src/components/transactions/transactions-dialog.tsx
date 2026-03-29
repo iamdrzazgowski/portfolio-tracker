@@ -13,7 +13,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from '@/components/ui/dialog';
-import { Asset, Portfolio } from '@/types/transactions';
+import { AssetSearchResult, Portfolio } from '@/types/transactions';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import {
@@ -35,7 +35,7 @@ interface FormValues {
     type: 'BUY' | 'SELL';
     date: string;
     portfolioId: string;
-    asset: Asset | null;
+    asset: AssetSearchResult | null;
     quantity: number;
     price: number;
 }

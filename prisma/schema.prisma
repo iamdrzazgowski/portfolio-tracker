@@ -109,6 +109,7 @@ model Asset {
   symbol         String
   type           AssetType
   currency       String
+  cryptoId       String?
   lastPrice      Float?
   lastPriceAt    DateTime?
   portfolioId    String

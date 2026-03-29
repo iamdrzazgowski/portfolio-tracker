@@ -8,6 +8,7 @@ export interface CreateTransactionInput {
     assetSymbol: string;
     assetType: AssetType;
     currency: string;
+    cryptoId?: string | null;
     portfolioId: string;
     type: TransactionType;
     quantity: number;
@@ -17,12 +18,34 @@ export interface CreateTransactionInput {
 
 export const transactionRepository = {
     async createWithAsset(input: CreateTransactionInput) {
+        console.log('[createWithAsset] input.cryptoId:', input.cryptoId);
+
         const existingAsset = await prisma.asset.findFirst({
             where: {
                 symbol: input.assetSymbol,
                 portfolioId: input.portfolioId,
             },
         });
+
+        console.log(
+            '[createWithAsset] existingAsset.cryptoId:',
+            existingAsset?.cryptoId,
+        );
+        console.log(
+            '[createWithAsset] warunek update:',
+            existingAsset && !existingAsset.cryptoId && input.cryptoId,
+        );
+
+        if (existingAsset && !existingAsset.cryptoId && input.cryptoId) {
+            const updated = await prisma.asset.update({
+                where: { id: existingAsset.id },
+                data: { cryptoId: input.cryptoId },
+            });
+            console.log(
+                '[createWithAsset] zaktualizowano cryptoId:',
+                updated.cryptoId,
+            );
+        }
 
         const result = await prisma.transaction.create({
             data: {
@@ -40,6 +63,7 @@ export const transactionRepository = {
                               symbol: input.assetSymbol,
                               type: input.assetType,
                               currency: input.currency,
+                              cryptoId: input.cryptoId ?? null,
                               portfolioId: input.portfolioId,
                           },
                       },
