@@ -1,7 +1,7 @@
 'use server';
 
 import prisma from '@/lib/prisma';
-import { fetchAssetPrice } from '@/lib/prices/fetchAssetPrice';
+import { fetchAssetPrice } from '@/lib/fetchAssetPrice';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 

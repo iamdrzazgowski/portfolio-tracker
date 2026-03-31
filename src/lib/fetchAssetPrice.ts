@@ -25,7 +25,7 @@ export async function fetchAssetPrice(asset: {
             return data[id]?.usd ?? null;
         }
 
-        return null; // COLLECTIBLE — brak automatycznej ceny
+        return null;
     } catch {
         return null;
     }

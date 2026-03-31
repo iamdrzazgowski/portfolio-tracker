@@ -1,4 +1,4 @@
-import { fetchAssetPrice } from '@/lib/prices/fetchAssetPrice';
+import { fetchAssetPrice } from '@/lib/fetchAssetPrice';
 type AssetType = 'STOCK' | 'ETF' | 'CRYPTO' | 'COLLECTIBLE';
 
 export async function GET(req: Request) {
