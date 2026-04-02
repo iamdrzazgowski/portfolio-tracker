@@ -67,7 +67,6 @@ export function KpiCards({ initial }: { initial: Kpis | null }) {
             </div>
 
             <div className='grid gap-3 sm:grid-cols-3'>
-                {/* Total Value */}
                 <div
                     className={`rounded-xl border p-4 transition-opacity duration-300 ${
                         isPending ? 'opacity-50' : 'opacity-100'
@@ -85,7 +84,6 @@ export function KpiCards({ initial }: { initial: Kpis | null }) {
                     </p>
                 </div>
 
-                {/* Total Invested */}
                 <div
                     className={`rounded-xl border p-4 transition-opacity duration-300 ${
                         isPending ? 'opacity-50' : 'opacity-100'
@@ -101,7 +99,6 @@ export function KpiCards({ initial }: { initial: Kpis | null }) {
                     </p>
                 </div>
 
-                {/* Total P/L */}
                 <div
                     className={`rounded-xl border p-4 transition-opacity duration-300 ${
                         isPending ? 'opacity-50' : 'opacity-100'

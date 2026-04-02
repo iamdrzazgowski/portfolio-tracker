@@ -3,7 +3,7 @@ import { headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { DashboardPageHeader } from '@/components/layout/dashboard-page-header';
 import { TrendingUp, TrendingDown, Wallet, BarChart3 } from 'lucide-react';
-import { KpiCards } from '@/components/ui/kpi-cards';
+import { KpiCards } from '@/components/dashboard/kpi-cards';
 import { getPortfolioKpis } from '@/actions/getPortfolioKpis';
 
 const placeholderKpis = [

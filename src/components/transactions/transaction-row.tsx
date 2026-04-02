@@ -16,7 +16,7 @@ import {
     formatNumber,
     formatTransactionTotal,
 } from '../../lib/transactions-table.utils';
-import { AssetTypeBadge } from '../ui/asset-type-badge';
+import { AssetTypeBadge } from './asset-type-badge';
 
 interface TransactionRowProps {
     transaction: Transaction;
