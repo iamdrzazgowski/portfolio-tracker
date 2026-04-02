@@ -1,21 +1,27 @@
-const finnhubApiKey = process.env.STOCK_API_KEY;
+// /lib/fetchAssetPrice.ts
+import YahooFinance from 'yahoo-finance2';
 
 export async function fetchAssetPrice(asset: {
     symbol: string;
-    type: 'STOCK' | 'ETF' | 'CRYPTO' | 'COLLECTIBLE';
+    type: 'STOCK' | 'ETF' | 'CRYPTO';
     cryptoId?: string | null;
 }): Promise<number | null> {
     try {
-        if (asset.type === 'STOCK' || asset.type === 'ETF') {
-            if (!asset.symbol || !finnhubApiKey) return null;
+        if (!asset.symbol) return null;
 
-            const res = await fetch(
-                `https://finnhub.io/api/v1/quote?symbol=${encodeURIComponent(asset.symbol)}&token=${finnhubApiKey}`,
-            );
-            const data = await res.json();
-            return data.c ?? null;
+        // Utwórz instancję YahooFinance
+        const yf = new YahooFinance();
+
+        // 📈 STOCK / ETF
+        if (asset.type === 'STOCK' || asset.type === 'ETF') {
+            // Wywołanie quoteSummary dla modułu price
+            const quote = await yf.quoteSummary(asset.symbol, {
+                modules: ['price'],
+            });
+            return quote.price?.regularMarketPrice ?? null;
         }
 
+        // 💰 CRYPTO (CoinGecko)
         if (asset.type === 'CRYPTO') {
             const id = asset.cryptoId ?? asset.symbol.toLowerCase();
             const res = await fetch(
@@ -26,7 +32,8 @@ export async function fetchAssetPrice(asset: {
         }
 
         return null;
-    } catch {
+    } catch (err) {
+        console.error('Price fetch error:', err);
         return null;
     }
 }

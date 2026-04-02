@@ -27,6 +27,7 @@ export interface AssetSearchResult {
     name: string;
     type: 'STOCK' | 'ETF' | 'CRYPTO' | 'COLLECTIBLE';
     cryptoId?: string | null;
+    mic?: string;
 }
 
 export interface Transaction {

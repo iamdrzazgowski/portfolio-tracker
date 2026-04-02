@@ -67,40 +67,42 @@ export function AddTransactionDialog({
 
     const watchAsset = watch('asset');
 
+    // 🔍 Szukanie assetów
     useEffect(() => {
         const timeout = setTimeout(async () => {
-            if (!assetQuery) {
-                setSuggestions([]);
-                return;
-            }
+            if (!assetQuery) return setSuggestions([]);
 
             if (
                 selectedAsset &&
                 assetQuery.toUpperCase() === selectedAsset.symbol.toUpperCase()
             ) {
-                setSuggestions([]);
-                return;
+                return setSuggestions([]);
             }
 
             const res = await fetch(`/api/assets/search?q=${assetQuery}`);
             const data = await res.json();
-
             setSuggestions(data);
         }, 300);
 
         return () => clearTimeout(timeout);
     }, [assetQuery, selectedAsset]);
 
+    // 💰 Pobranie ceny
     const fetchPrice = async () => {
         if (!watchAsset) return;
 
-        const res = await fetch(
-            `/api/assets/price?symbol=${watchAsset.symbol}&type=${watchAsset.type}&cryptoId=${watchAsset.cryptoId || ''}`,
-        );
+        const params = new URLSearchParams({
+            symbol: watchAsset.symbol,
+            type: watchAsset.type,
+            cryptoId: watchAsset.cryptoId || '',
+        });
+
+        const res = await fetch(`/api/assets/price?${params.toString()}`);
         const data = await res.json();
         setValue('price', data?.price ?? 0);
     };
 
+    // 📄 Zatwierdzenie formularza
     const onSubmit = (data: FormValues | FormData) => {
         startTransition(async () => {
             const result = await createTransactionAction(data);
@@ -123,6 +125,7 @@ export function AddTransactionDialog({
                     Add Transaction
                 </Button>
             </DialogTrigger>
+
             <DialogContent className='sm:max-w-[500px]'>
                 <DialogHeader>
                     <DialogTitle>Add Transaction</DialogTitle>
@@ -134,6 +137,7 @@ export function AddTransactionDialog({
                 <form
                     onSubmit={handleSubmit(onSubmit)}
                     className='grid gap-5 py-4'>
+                    {/* Type & Date */}
                     <div className='grid grid-cols-2 gap-4'>
                         <div className='grid gap-2'>
                             <Label>Type</Label>
@@ -143,9 +147,7 @@ export function AddTransactionDialog({
                                 render={({ field }) => (
                                     <Select
                                         value={field.value}
-                                        onValueChange={(val) =>
-                                            field.onChange(val)
-                                        }>
+                                        onValueChange={field.onChange}>
                                         <SelectTrigger className='border-border/50 bg-secondary'>
                                             <SelectValue placeholder='Select type' />
                                         </SelectTrigger>
@@ -178,6 +180,7 @@ export function AddTransactionDialog({
                         </div>
                     </div>
 
+                    {/* Portfolio */}
                     <div className='grid gap-2'>
                         <Label>Portfolio</Label>
                         <Controller
@@ -186,9 +189,7 @@ export function AddTransactionDialog({
                             render={({ field }) => (
                                 <Select
                                     value={field.value}
-                                    onValueChange={(val) =>
-                                        field.onChange(val)
-                                    }>
+                                    onValueChange={field.onChange}>
                                     <SelectTrigger className='border-border/50 bg-secondary'>
                                         <SelectValue placeholder='Select portfolio' />
                                     </SelectTrigger>
@@ -206,6 +207,7 @@ export function AddTransactionDialog({
                         />
                     </div>
 
+                    {/* Asset */}
                     <div className='grid gap-2 relative'>
                         <Label htmlFor='asset-input'>Asset</Label>
                         <Input
@@ -219,7 +221,6 @@ export function AddTransactionDialog({
                                 setSelectedAsset(null);
                             }}
                         />
-
                         {suggestions.length > 0 && (
                             <div className='absolute top-full left-0 mt-1 border rounded-md max-h-40 overflow-y-auto z-50 bg-background w-full shadow'>
                                 {suggestions.map((asset, index) => (
@@ -240,6 +241,7 @@ export function AddTransactionDialog({
                         )}
                     </div>
 
+                    {/* Quantity & Price */}
                     <div className='grid grid-cols-2 gap-4'>
                         <div className='grid gap-2'>
                             <div className='flex h-8 items-center'>
