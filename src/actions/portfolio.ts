@@ -26,8 +26,6 @@ export async function createPortfolioAction(data: {
         userId: session.user.id,
     });
 
-    console.log(portfolio);
-
     return {
         success: true,
         data: portfolio,
@@ -85,8 +83,6 @@ export async function deletePortfolioAction(portfolioId: string) {
         portfolioId,
         userId: session.user.id,
     });
-
-    console.log(portfolio);
 
     return portfolio;
 }

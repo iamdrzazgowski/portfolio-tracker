@@ -93,12 +93,10 @@ export default async function AssetAllocation() {
 
                     return (
                         <div key={item.key} className='flex items-center gap-3'>
-                            {/* label neutralny */}
                             <span className='w-14 text-[11px] text-muted-foreground'>
                                 {style.label}
                             </span>
 
-                            {/* bar */}
                             <div className='h-1 flex-1 overflow-hidden rounded-full bg-border/60'>
                                 <div
                                     className={`h-full rounded-full ${style.bar}`}
@@ -106,7 +104,6 @@ export default async function AssetAllocation() {
                                 />
                             </div>
 
-                            {/* procent */}
                             <span className='w-10 text-right text-[11px] text-muted-foreground/40'>
                                 {item.pct > 0
                                     ? `${item.pct.toFixed(0)}%`
