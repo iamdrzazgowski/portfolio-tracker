@@ -11,17 +11,27 @@ export async function refreshPrices() {
 
     const assets = await prisma.asset.findMany({
         where: { portfolio: { userId: session.user.id } },
+        select: { id: true, symbol: true, type: true, cryptoId: true },
     });
 
     for (const asset of assets) {
-        const price = await fetchAssetPrice(asset);
+        console.log(`Fetching price for ${asset.symbol} (${asset.type})`);
+        const price = await fetchAssetPrice({
+            symbol: asset.symbol,
+            type: asset.type as 'STOCK' | 'ETF' | 'CRYPTO',
+            cryptoId: asset.cryptoId ?? undefined,
+        });
 
         if (price !== null) {
+            console.log(`Updating ${asset.symbol}: ${price}`);
             await prisma.asset.update({
                 where: { id: asset.id },
                 data: { lastPrice: price, lastPriceAt: new Date() },
             });
+        } else {
+            console.warn(`Price not found for ${asset.symbol}`);
         }
+
         await new Promise((res) => setTimeout(res, 200));
     }
 }
