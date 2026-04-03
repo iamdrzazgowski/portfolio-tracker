@@ -1,6 +1,6 @@
 import { TableHead, TableHeader, TableRow } from '@/components/ui/table';
 
-export function TransactionsTableHeader() {
+export function TransactionsTableHeader(type?: string) {
     return (
         <TableHeader>
             <TableRow className='border-b border-border/50 hover:bg-transparent'>
@@ -28,7 +28,7 @@ export function TransactionsTableHeader() {
                 <TableHead className='px-3 text-[10px] font-normal uppercase tracking-[0.08em] text-muted-foreground sm:px-4'>
                     Date
                 </TableHead>
-                <TableHead className='w-10 sm:w-12' />
+                {type !== 'view' && <TableHead className='w-10 sm:w-12' />}
             </TableRow>
         </TableHeader>
     );

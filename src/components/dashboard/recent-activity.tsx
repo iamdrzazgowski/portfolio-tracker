@@ -1,10 +1,19 @@
-import { TrendingDown, Wallet } from 'lucide-react';
-import React from 'react';
+import { getTransactionsAction } from '@/actions/transaction';
+import EmptyRecentActivity from './empty-recent-activity';
+import { CardContent } from '../ui/card';
+import { Wallet } from 'lucide-react';
+import { TransactionsTableHeader } from '../transactions/transactions-table-header';
+import { Table, TableBody } from '../ui/table';
+import { TransactionRow } from '../transactions/transaction-row';
+import { EmptyTransactionsState } from '../transactions/empty-transactions-state';
 
-export default function RecentActivity() {
+export default async function RecentActivity() {
+    const transactions = await getTransactionsAction();
+    const filtered = transactions.slice(0, 4);
+
     return (
         <div className='rounded-xl border border-border/50 bg-card p-5'>
-            <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between pb-6'>
                 <div>
                     <p className='text-sm font-medium text-foreground'>
                         Recent Activity
@@ -17,21 +26,25 @@ export default function RecentActivity() {
                     <Wallet className='size-4 text-primary/40' />
                 </div>
             </div>
-            <div className='mt-4 flex flex-col items-center justify-center gap-2 py-10 text-center'>
-                <TrendingDown className='size-8 text-muted-foreground/20' />
-                <p className='text-sm text-muted-foreground/50'>
-                    No transactions yet
-                </p>
-                <p className='text-[11px] text-muted-foreground/40'>
-                    Head to{' '}
-                    <a
-                        href='/dashboard/transactions'
-                        className='text-primary/60 underline underline-offset-2 hover:text-primary'>
-                        Transactions
-                    </a>{' '}
-                    to record your first trade.
-                </p>
-            </div>
+            <CardContent className='p-0'>
+                <div className='overflow-x-auto'>
+                    <Table className='min-w-[680px] [&_td]:py-2.5 [&_th]:py-2.5 sm:min-w-0'>
+                        <TransactionsTableHeader type='view' />
+                        <TableBody>
+                            {filtered.map((transaction) => (
+                                <TransactionRow
+                                    key={transaction.id}
+                                    transaction={transaction}
+                                    type='view'
+                                />
+                            ))}
+                            {filtered.length === 0 && (
+                                <EmptyTransactionsState />
+                            )}
+                        </TableBody>
+                    </Table>
+                </div>
+            </CardContent>
         </div>
     );
 }
