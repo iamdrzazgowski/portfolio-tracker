@@ -47,6 +47,11 @@ export const portfolioRepository = {
                 description: true,
                 updatedAt: true,
                 assets: {
+                    where: {
+                        transactions: {
+                            some: {},
+                        },
+                    },
                     select: {
                         id: true,
                         createdAt: true,
