@@ -35,6 +35,7 @@ model User {
   sessions      Session[]
   accounts      Account[]
   portfolios    Portfolio[]
+  portfolioSnapshots PortfolioSnapshot[]
 
   @@unique([email])
   @@map("user")
@@ -98,7 +99,6 @@ model Portfolio {
 
   user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   assets Asset[]
-  snapshots PortfolioSnapshot[]
 
   @@index([userId])
 }
@@ -139,17 +139,17 @@ model Transaction {
 }
 
 model PortfolioSnapshot {
-  id          String   @id @default(cuid())
-  portfolioId String
-  date        DateTime
-  totalValue  Float
-  invested    Float
-  profit      Float
-  createdAt   DateTime @default(now())
+  id         String   @id @default(cuid())
+  userId     String
+  date       DateTime
+  totalValue Float
+  invested   Float
+  profit     Float
+  createdAt  DateTime @default(now())
 
-  portfolio Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([portfolioId, date])
-  @@index([portfolioId])
+  @@unique([userId, date])
+  @@index([userId])
 }
 
