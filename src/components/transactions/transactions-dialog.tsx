@@ -67,7 +67,7 @@ export function AddTransactionDialog({
 
     const watchAsset = watch('asset');
 
-    // 🔍 Szukanie assetów
+    // Szukanie assetów
     useEffect(() => {
         const timeout = setTimeout(async () => {
             if (!assetQuery) return setSuggestions([]);
@@ -87,7 +87,7 @@ export function AddTransactionDialog({
         return () => clearTimeout(timeout);
     }, [assetQuery, selectedAsset]);
 
-    // 💰 Pobranie ceny
+    // Pobranie ceny
     const fetchPrice = async () => {
         if (!watchAsset) return;
 
@@ -102,7 +102,7 @@ export function AddTransactionDialog({
         setValue('price', data?.price ?? 0);
     };
 
-    // 📄 Zatwierdzenie formularza
+    //  Zatwierdzenie formularza
     const onSubmit = (data: FormValues | FormData) => {
         startTransition(async () => {
             const result = await createTransactionAction(data);

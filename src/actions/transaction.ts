@@ -9,7 +9,6 @@ import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 
 export async function createTransactionAction(formData) {
-    console.log('[createTransaction] asset:', formData.asset);
     const session = await auth.api.getSession({
         headers: await headers(),
     });
@@ -31,10 +30,6 @@ export async function createTransactionAction(formData) {
             price: Number(formData.price),
             date: formData.date,
         };
-        console.log(
-            '[createTransaction] dto.asset.cryptoId:',
-            dto.asset.cryptoId,
-        );
 
         const transaction = await transactionService.createTransaction(dto);
         revalidatePath('/');

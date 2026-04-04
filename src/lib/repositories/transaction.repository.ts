@@ -81,10 +81,12 @@ export const transactionRepository = {
                 date: true,
                 asset: {
                     select: {
+                        id: true,
                         name: true,
                         symbol: true,
                         type: true,
                         currency: true,
+                        lastPrice: true,
                         portfolio: {
                             select: {
                                 id: true,

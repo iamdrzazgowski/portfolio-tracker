@@ -31,7 +31,6 @@ export function TransactionRow({
     type,
 }: TransactionRowProps) {
     const isBuy = transaction.type === 'BUY';
-    console.log(transaction);
 
     return (
         <TableRow className='group border-t border-border/50 hover:bg-muted/30 transition-colors'>

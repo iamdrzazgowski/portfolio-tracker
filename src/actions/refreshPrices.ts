@@ -15,7 +15,6 @@ export async function refreshPrices() {
     });
 
     for (const asset of assets) {
-        console.log(`Fetching price for ${asset.symbol} (${asset.type})`);
         const price = await fetchAssetPrice({
             symbol: asset.symbol,
             type: asset.type as 'STOCK' | 'ETF' | 'CRYPTO',
@@ -23,7 +22,6 @@ export async function refreshPrices() {
         });
 
         if (price !== null) {
-            console.log(`Updating ${asset.symbol}: ${price}`);
             await prisma.asset.update({
                 where: { id: asset.id },
                 data: { lastPrice: price, lastPriceAt: new Date() },
