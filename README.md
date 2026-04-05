@@ -1,130 +1,81 @@
-# Portfolio Tracker – Plan Działania (Harmonogram)
+# Portfolio Tracker
 
-## Cel projektu
+**Portfolio Tracker** is a web application for tracking the value of an
+investment portfolio. Users can add various assets (stocks, ETFs,
+cryptocurrencies), fetch live prices from external APIs, and analyze portfolio
+performance over time.
 
-MVP aplikacji do śledzenia inwestycji w różne aktywa (akcje, ETF, krypto, karty
-kolekcjonerskie) z bieżącą wyceną portfela i podstawową analizą wyników.
-
----
-
-## Dzień 1 – Fundamenty projektu
-
-- Zaplanowanie architektury:
-    - [ ] Użytkownicy, portfele, aktywa, transakcje, karty kolekcjonerskie
-- Określenie minimalnej bazy danych (tylko transakcje + asset info)
-    - [ ] Done
-- Przygotowanie listy endpointów / komponentów:
-    - [ ] Dashboard portfela
-    - [ ] CRUD portfela
-    - [ ] CRUD aktywów
-    - [ ] CRUD transakcji
-- Stworzenie ogólnego designu UI / layoutu (prosty wireframe)
-    - [ ] Done
+> Built as a full-stack project to practice modern web development and provide a
+> useful portfolio monitoring tool.
 
 ---
 
-## Dzień 2 – Autoryzacja i profile
-
-- Implementacja logowania użytkowników (BetterAuth)
-    - [ ] Done
-- Ochrona tras / danych użytkownika
-    - [ ] Done
-- CRUD profilu użytkownika (opcjonalnie)
-    - [ ] Done
-- Testy autoryzacji
-    - [ ] Done
+![Application](https://github.com/user-attachments/assets/3261ff93-7fa8-498b-b464-e2d824a419a7)
 
 ---
 
-## Dzień 3 – Portfele i aktywa
+## Features
 
-- CRUD portfela:
-    - [ ] Dodaj, edytuj, usuń
-    - [ ] Lista portfeli użytkownika
-- CRUD aktywów:
-    - [ ] Dodawanie aktywów do portfela
-    - [ ] Typy: `STOCK`, `ETF`, `CRYPTO`, `COLLECTIBLE`
-    - [ ] Pola: symbol, nazwa, waluta, ostatnia cena
-    - [ ] Testy dodawania / edycji / usuwania portfela i aktywów
+- User registration and login
+- CRUD operations for investment portfolios
+- CRUD operations for individual assets
+- Integration with external pricing APIs (e.g., Yahoo Finance, CoinGecko)
+- Dashboard showing current portfolio value and statistics
+- Responsive UI with charts and graphs
 
 ---
 
-## Dzień 4 – Transakcje
+## Technologies
 
-- CRUD transakcji `BUY` / `SELL` dla aktywów
-    - [ ] Done
-- Obliczanie ilości posiadanej każdego aktywa (runtime)
-    - [ ] Done
-- Policz wartość inwestycji (`quantity * price`)
-    - [ ] Done
+This project uses:
 
----
-
-## Dzień 5 – Integracja z API cen
-
-- Pobieranie bieżących cen z API:
-    - [ ] Yahoo Finance / AlphaVantage → akcje, ETF
-    - [ ] CoinGecko → kryptowaluty
-- Aktualizacja pola `lastPrice` i `lastPriceAt` dla aktywów
-    - [ ] Done
-- Testy poprawności wyliczeń portfela
-    - [ ] Done
+- **Frontend:** Next.js 16 (React 19, TypeScript 5)
+- **Backend:** Node.js / Next.js API routes
+- **Database:** PostgreSQL (via Prisma ORM 7)
+- **Auth:** Better Auth + Prisma Adapter
+- **UI:** shadcn/ui, Radix UI, Lucide React, Tailwind CSS 4
+- **Forms:** React Hook Form
+- **Styling utilities:** clsx, tailwind-merge, tw-animate-css
+- **Integrations:** Yahoo Finance 2, CoinGecko API
 
 ---
 
-## Dzień 6 – Dashboard portfela
+## Local Setup
 
-- Widok szczegółowy portfela:
-    - [ ] Total invested
-    - [ ] Current value
-    - [ ] Profit / Loss
-    - [ ] ROI %
-    - [ ] Lista aktywów z bieżącą wartością i P/L
-    - [ ] W przypadku kolekcjonerskich kart → `estimatedValue`
-    - [ ] Prosty wykres wartości portfela (Chart.js / Recharts)
+1. **Clone the repository**
 
----
+```bash
+git clone https://github.com/iamdrzazgowski/portfolio-tracker.git
+cd portfolio-tracker
+```
 
-## Dzień 7 – Drobne usprawnienia i UX
+2. **Install dependencies**
 
-- [ ] Filtry aktywów po typie
-- [ ] Responsywność UI
-- [ ] Kolory profit/loss
-- [ ] Ikonki / logotypy aktywów
-- [ ] Poprawki UX / drobne bugi
-- [ ] Przygotowanie do prezentacji / screenów
+```bash
+npm install
+# or
+yarn install
+```
 
----
+3. **Configure environment variables**
 
-## Dzień 8 – Snapshoty portfela (opcjonalnie)
+Create a `.env` file with the following variables:
 
-- Implementacja zapisu snapshotu portfela raz dziennie
-    - [ ] Done
-- Przechowywanie:
-    - [ ] `totalValue`
-    - [ ] `invested`
-    - [ ] `profit`
-- Podstawowe wykresy historyczne z snapshotów
-    - [ ] Done
-- Testy poprawności
-    - [ ] Done
+```env
+DATABASE_URL="postgresql://..."
+NEXT_PUBLIC_API_KEY="..."
+```
 
----
+4. **Run database migrations**
 
-## Dzień 9 – Testy końcowe i deployment
+```bash
+npx prisma migrate dev --name init
+```
 
-- [ ] Sprawdzenie wszystkich funkcjonalności CRUD
-- [ ] Testy integracji z API cen
-- [ ] Finalne poprawki UI
-- [ ] Deployment aplikacji (Vercel + PostgreSQL)
-- [ ] Przygotowanie dokumentacji / README z opisem funkcjonalności
+5. **Start the development server**
 
----
+```bash
+npm run dev
+```
 
-## Dzień 10 – Dodatki i backlog (opcjonalnie)
-
-- [ ] Integracja CSV import / export transakcji
-- [ ] Alerty cenowe
-- [ ] Historia cen (`AssetPrice`)
-- [ ] Multi-currency
-- [ ] Integracja API dla kolekcjonerskich kart
+Open your browser at [http://localhost:3000](http://localhost:3000)
