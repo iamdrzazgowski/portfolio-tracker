@@ -6,4 +6,15 @@ export const snapshotRepository = {
             data,
         });
     },
+
+    async getUserSnapshot(userId: string) {
+        return prisma.portfolioSnapshot.findMany({
+            where: {
+                userId,
+            },
+            orderBy: {
+                date: 'desc',
+            },
+        });
+    },
 };
