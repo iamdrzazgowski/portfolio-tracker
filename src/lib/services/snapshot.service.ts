@@ -4,9 +4,15 @@ import { transactionRepository } from '../repositories/transaction.repository';
 export async function createPortfolioSnapshot(userId: string) {
     const now = new Date();
 
-    const snapshotDate = new Date(now.getFullYear(), now.getMonth(), 1);
+    const monthStart = new Date(now.getFullYear(), now.getMonth(), 1);
 
     try {
+        const existing = await snapshotRepository.findFirst(userId, monthStart);
+
+        if (existing) {
+            return { status: 'skipped' };
+        }
+
         const transactions =
             await transactionRepository.findManyByUserId(userId);
 
@@ -43,7 +49,6 @@ export async function createPortfolioSnapshot(userId: string) {
                 (t) => t.asset.id === assetId,
             )?.asset;
             const price = asset?.lastPrice || 0;
-
             totalValue += quantity * price;
             invested += assetInvested;
         }
@@ -52,15 +57,25 @@ export async function createPortfolioSnapshot(userId: string) {
 
         await snapshotRepository.create({
             userId,
-            date: snapshotDate,
+            date: monthStart,
             totalValue,
             invested,
             profit,
         });
 
         return { status: 'created' };
-    } catch (err) {
+    } catch (err: any) {
         if (err.code === 'P2002') return { status: 'skipped' };
         throw err;
     }
+}
+
+export async function getUserSnapshots(userId: string) {
+    if (!userId) throw new Error('Missing userID');
+
+    const userSnapshots = await snapshotRepository.getUserSnapshots(userId);
+
+    if (!userSnapshots) throw new Error('Problem with get user snapshots');
+
+    return userSnapshots;
 }
