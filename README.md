@@ -35,7 +35,6 @@ This project uses:
 - **Auth:** Better Auth + Prisma Adapter
 - **UI:** shadcn/ui, Radix UI, Lucide React, Tailwind CSS 4
 - **Forms:** React Hook Form
-- **Styling utilities:** clsx, tailwind-merge, tw-animate-css
 - **Integrations:** Yahoo Finance 2, CoinGecko API
 
 ---
