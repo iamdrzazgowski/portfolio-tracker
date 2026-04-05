@@ -63,7 +63,8 @@ Create a `.env` file with the following variables:
 
 ```env
 DATABASE_URL="postgresql://..."
-NEXT_PUBLIC_API_KEY="..."
+BETTER_AUTH_URL="..."
+BETTER_AUTH_SECRET="..."
 ```
 
 4. **Run database migrations**
