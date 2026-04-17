@@ -12,7 +12,7 @@ export async function fetchAssetPrice(asset: {
         // Utwórz instancję YahooFinance
         const yf = new YahooFinance();
 
-        // 📈 STOCK / ETF
+        // STOCK / ETF
         if (asset.type === 'STOCK' || asset.type === 'ETF') {
             // Wywołanie quoteSummary dla modułu price
             const quote = await yf.quoteSummary(asset.symbol, {
@@ -21,7 +21,7 @@ export async function fetchAssetPrice(asset: {
             return quote.price?.regularMarketPrice ?? null;
         }
 
-        // 💰 CRYPTO (CoinGecko)
+        // CRYPTO (CoinGecko)
         if (asset.type === 'CRYPTO') {
             const id = asset.cryptoId ?? asset.symbol.toLowerCase();
             const res = await fetch(

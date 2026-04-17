@@ -6,7 +6,7 @@ export async function searchAssets(q: string) {
     // Utwórz instancję klienta
     const yf = new YahooFinance();
 
-    // 🔹 STOCK / ETF przez Yahoo Finance
+    // STOCK / ETF przez Yahoo Finance
     const yahooData = await yf.search(query);
     const stocks = (yahooData.quotes || [])
         .filter((item) => item.symbol) // tylko realne tickery
@@ -36,12 +36,12 @@ export async function searchAssets(q: string) {
             return { symbol, name: desc, type };
         });
 
-    // 🔒 Usuwanie duplikatów
+    // Usuwanie duplikatów
     const stockKeys = new Set(
         stocks.map((s) => `${s.symbol}-${s.name}`.toLowerCase()),
     );
 
-    // 💰 CRYPTO przez CoinGecko
+    // CRYPTO przez CoinGecko
     const cryptoRes = await fetch(
         `https://api.coingecko.com/api/v3/search?query=${query}`,
         { cache: 'no-store' },
