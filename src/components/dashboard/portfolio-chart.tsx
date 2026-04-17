@@ -6,7 +6,7 @@ import { subMonths, format } from 'date-fns';
 export default function PortfolioChart({ data, monthsToShow = 6 }) {
     const safeData = Array.isArray(data) ? data : data ? [data] : [];
 
-    // --- Generujemy ostatnie X miesięcy i wypełniamy brakujące 0
+    // Generujemy ostatnie X miesięcy i wypełniamy brakujące 0
     const months: { label: string; key: string }[] = [];
     const monthMap: Record<string, { value: number; dateStr: string }> = {};
 
@@ -14,10 +14,10 @@ export default function PortfolioChart({ data, monthsToShow = 6 }) {
         const d = subMonths(new Date(), i);
         const key = `${d.getUTCFullYear()}-${String(d.getUTCMonth() + 1).padStart(2, '0')}`;
         months.push({ label: format(d, 'MMM'), key });
-        monthMap[key] = { value: 0, dateStr: format(d, 'MMM yyyy') }; // placeholder
+        monthMap[key] = { value: 0, dateStr: format(d, 'MMM yyyy') };
     }
 
-    // --- Wypełniamy dane z bazy, używając UTC
+    // Wypełniamy dane z bazy, używając UTC
     safeData.forEach((item) => {
         const d = new Date(item.date);
         const year = d.getUTCFullYear();
